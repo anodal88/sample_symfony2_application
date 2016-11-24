@@ -1,0 +1,108 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Configuracion</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Tiempoasignacion</th>
+                <td>{{ entity.tiempoAsignacion }}</td>
+            </tr>
+            <tr>
+                <th>Tiemporespuestaplanpiloto</th>
+                <td>{{ entity.tiempoRespuestaPlanPiloto }}</td>
+            </tr>
+            <tr>
+                <th>Tiemporespuestanormal</th>
+                <td>{{ entity.tiempoRespuestaNormal }}</td>
+            </tr>
+            <tr>
+                <th>Emailviaticos</th>
+                <td>{{ entity.emailViaticos }}</td>
+            </tr>
+            <tr>
+                <th>Emailvacaciones</th>
+                <td>{{ entity.emailVacaciones }}</td>
+            </tr>
+            <tr>
+                <th>Activa</th>
+                <td>{{ entity.activa }}</td>
+            </tr>
+            <tr>
+                <th>Tiempoanulacion</th>
+                <td>{{ entity.tiempoAnulacion }}</td>
+            </tr>
+            <tr>
+                <th>Tiempoemision</th>
+                <td>{{ entity.tiempoEmision }}</td>
+            </tr>
+            <tr>
+                <th>Tiemporevision</th>
+                <td>{{ entity.tiempoRevision }}</td>
+            </tr>
+            <tr>
+                <th>Tiempofomapagocash</th>
+                <td>{{ entity.tiempoFomaPagoCash }}</td>
+            </tr>
+            <tr>
+                <th>Tiempofomapagoplanpiloto</th>
+                <td>{{ entity.tiempoFomaPagoPlanPiloto }}</td>
+            </tr>
+            <tr>
+                <th>Tiempofomapagovtc</th>
+                <td>{{ entity.tiempoFomaPagoVtc }}</td>
+            </tr>
+            <tr>
+                <th>Tiempolocal</th>
+                <td>{{ entity.tiempoLocal }}</td>
+            </tr>
+            <tr>
+                <th>Tiemporemota</th>
+                <td>{{ entity.tiempoRemota }}</td>
+            </tr>
+            <tr>
+                <th>Tiempoporpasajero</th>
+                <td>{{ entity.tiempoPorPasajero }}</td>
+            </tr>
+            <tr>
+                <th>Ponderacionplanpiloto</th>
+                <td>{{ entity.ponderacionPlanPiloto }}</td>
+            </tr>
+            <tr>
+                <th>Ponderacionnoplanpiloto</th>
+                <td>{{ entity.ponderacionNoPlanPiloto }}</td>
+            </tr>
+            <tr>
+                <th>Ponderacionemision</th>
+                <td>{{ entity.ponderacionEmision }}</td>
+            </tr>
+            <tr>
+                <th>Ponderacionrevision</th>
+                <td>{{ entity.ponderacionRevision }}</td>
+            </tr>
+            <tr>
+                <th>Ponderacionanulacion</th>
+                <td>{{ entity.ponderacionAnulacion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('configuracion') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('configuracion_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

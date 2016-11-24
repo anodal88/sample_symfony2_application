@@ -1,0 +1,430 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+{% block stylesheets %}
+ {{parent()}}
+            
+            <link href="{{ asset('bundles/base/css/fullcalendar/fullcalendar.css') }}" rel="stylesheet" type="text/css" />
+           
+         
+        {% endblock %}
+{% block sidebar %} 
+           {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Configuraciones</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Configuraciones</li>
+     <li class="active">Feriados</li>
+ {% endblock %}
+  
+ {% block area %}
+    <div class="col-md-12"> 
+     <div class="row" >
+         <div class="col-md-3" id="left_container">
+             <div id="divadicionar" class="box box-primary ">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        <button title="" data-toggle="tooltip" class="btn btn-primary btn-sm daterange pull-right btn-circle" onclick="addferiado();" id="addferiado" data-original-title="Adicionar"><i class="fa fa-plus"></i></button>
+                                        
+                                    </div>
+                                    <h3 class="box-title pull-right">Crear Feriado</h3>
+                                </div>
+                                <div class="box-body">
+                                    
+                                    
+                                    <div class="input-group form-group">
+                                        <input readonly="true" type="text" placeholder="Inicio - Fin" id="fechaferiado" class="form-control pull-right">
+                                         <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                    </div>
+                                   
+                                    <div class="input-group form-group">
+                                        <textarea  placeholder="Descripci&oacute;n" class="form-control" id="descripcion"></textarea>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-align-left"></i>                                            
+                                        </div><!-- /btn-group -->
+                                    </div><!-- /input-group -->
+                                    <div id="notificaciones">
+                                    </div>
+                                </div>
+                        
+                  </div>
+                 <div id="diveditarevento" class="box box-primary">
+                                <div class="box-header">
+                                    <div class="box-tools pull-left">
+                                       
+                                        <button onclick="deleteFeriado();" class="btn btn-bg bg-red-gradient btn-sm btn-circle"><i class="fa fa-trash-o"></i></button>
+                                        <button onclick="editFeriado();" class="btn bg-green-gradient btn-sm btn-circle"><i class="fa fa-edit"></i></button>
+                                    </div>
+                                    <h3 class="box-title pull-right">Detalle Feriado</h3>
+                                </div>
+                                <div class="box-body">
+                                    
+                                    <p class="help-block">Por favor seleccione un evento en el calendario, para poder editarlo.</p>
+                                    <div class="form-group">
+                                        <input readonly="true" type="text" placeholder="Fecha" id="editfechaferiado" class="form-control ">
+                                        <input type="hidden" value="" id="identificador">
+                                    </div>
+                                   
+                                    <div class=" form-group">
+                                        <textarea readonly="true" placeholder="Descripci&oacute;n" class="form-control" id="editdescripcion"></textarea>
+                                    </div><!-- /input-group -->
+                                    <div id="edit_notificaciones">
+                                    </div>
+                                </div>
+                            </div>
+         </div>
+         <div class="col-md-9">
+             <div id="divcalendario" class="box box-primary">
+                 <div class="box-body no-padding">
+                        <div id="calendar"></div>
+                 </div>
+              
+             </div>
+         </div>
+         
+     </div>
+        </div>
+     
+  {% endblock %}
+     
+  {% block javascripts %}
+    {{parent()}}
+            
+           <script src="{{ asset('bundles/base/js/plugins/fullcalendar/fullcalendar.min.js') }}" type="text/javascript"></script>
+           
+            <script type="text/javascript">
+            $(document).ready(function(){
+               
+                //Date range picker
+                //$('#fechaferiado').daterangepicker();
+                $('#fechaferiado').daterangepicker(
+                {
+                    timePicker: true,
+                    timePickerIncrement: 5,
+                    format: 'MM/DD/YYYY H:mm '
+                 
+                    
+                });
+              
+               
+            });
+            
+            function checkSession()
+            {
+                if("{{app.user}}"== '')
+                {
+                    alert('finalizo la session')
+                }
+            }
+          
+                
+                function addferiado()
+                {
+                    
+                   if($('#descripcion').val().length==0 || $('#fechaferiado').val().length==0)
+                     {
+                        if(!document.getElementById('noblank_descripcion'))
+                        {
+                            $('#notificaciones').append('<div id="noblank_descripcion" class="callout callout-danger"><h4><i class="fa fa-bullhorn"></i> Alerta!</h4><p> La descripci&oacute;n y el rango de fechas del feriado son campos obligatorios.</p></div>');
+                        }
+                     }
+                     else
+                     {
+                         if(document.getElementById('noblank_descripcion'))
+                            {
+                                $('#notificaciones').remove();
+                            }
+                            $('#divadicionar').append('<div class="overlay "></div><div class="loading-img"></div>');
+                            $('#divcalendario').append('<div class="overlay "></div><div class="loading-img"></div>');
+                         $.ajax({
+                            url: '{{path('feriado_new_ajax')}}',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                rango: $('#fechaferiado').val(),
+                                descripcion: $('#descripcion').val(),
+                                empresa_id:{{app.user.empresa.id}}
+                            },                          
+                            success: function(result) {
+                               // alert(result)
+                                //$('#calendar').fullCalendar("removeEvents");        
+                                //$('#calendar').fullCalendar('addEventSource', events);      
+                                $('#calendar').fullCalendar('refetchEvents');
+                                $('#descripcion').val('');
+                                $('#fechaferiado').val('');
+                                $('.overlay').remove();
+                                $('.loading-img').remove();
+                              
+                            }
+                            });
+                     }
+                   
+                }
+            
+             function getInitDateOfCalendar()
+              {
+                var fecha= $('#calendar').fullCalendar('getDate');
+                var mes= fecha.getMonth();
+                var dia= fecha.getDate();
+                var year = fecha.getFullYear();
+                 return mes+'/'+dia+'/'+year;//.getFullYear();
+              }
+              function getEndDateOfCalendar()
+              {
+               // $('#calendar').fullCalendar('next');
+                //$('#calendar').fullCalendar('next');
+                var fecha= $('#calendar').fullCalendar('getDate');
+                var mes= fecha.getMonth();
+                var dia= fecha.getDate();
+                var year = fecha.getFullYear();
+                var total = new Date(year, mes+2, dia);
+                 return total.getMonth()+'/'+total.getDate()+'/'+total.getFullYear();//.getFullYear();
+              }
+              
+            function editFeriado()
+            {
+                if($('#editdescripcion').val().length==0 || $('#editfechaferiado').val().length==0)
+                     {
+                        if(!document.getElementById('no_select_event_edit'))
+                        {
+                            $('#edit_notificaciones').append('<div id="no_select_event_edit" class="callout callout-danger"><h4><i class="fa fa-bullhorn"></i> Alerta!</h4><p> Debe seleccionar el feriado que desea modificar.</p></div>');
+                        }
+                     }
+                     else
+                     {
+                         if(document.getElementById('no_select_event_edit'))
+                            {
+                                $('#no_select_event_edit').remove();
+                            }
+                         $('#diveditarevento').append('<div class="overlay "></div><div class="loading-img"></div>');
+                         $('#divcalendario').append('<div class="overlay "></div><div class="loading-img"></div>');
+                         $.ajax({
+                            url: '{{path('feriado_update_ajax')}}',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                id: $('#identificador').val(),
+                                descripcion: $('#editdescripcion').val(),
+                                rango:$('#editfechaferiado').val()
+                            },                          
+                            success: function(result) {
+                                //alert(result)
+                                //$('#calendar').fullCalendar("removeEvents");        
+                                //$('#calendar').fullCalendar('addEventSource', events); 
+                             
+                                
+                                $('#notificacion_accion').append('<p>'+result+'</p>');
+                                $('#calendar').fullCalendar('refetchEvents');
+                                $('#editdescripcion').val('');
+                                $('#editfechaferiado').val('');
+                                $('.overlay').remove();
+                                $('.loading-img').remove();
+                               
+                                if(!document.getElementById('mensajecorrecto'))
+                                    {
+                                         $( '<div id="mensajecorrecto" style="width:90%;margin-left:5%;" class="alert alert-success alert-dismissable">'+
+                                        '<i class="fa fa-check"></i>'+
+                                        '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+
+                                        '<b>Informaci&oacute;n!</b> <span>'+result+'</span>'+
+                                    '</div>' ).insertBefore( "#left_container" );
+                                    }
+                                
+                            }
+                            });
+                     }
+            }
+            
+            function deleteFeriado()
+            {
+               if($('#editdescripcion').val().length==0 || $('#editfechaferiado').val().length==0)
+                     {
+                        if(!document.getElementById('no_select_event_remove'))
+                        {
+                            $('#edit_notificaciones').append('<div id="no_select_event_remove" class="callout callout-danger"><h4><i class="fa fa-bullhorn"></i> Alerta!</h4><p> Debe seleccionar el feriado que desea eliminar.</p></div>');
+                        }
+                     }
+                else
+                     {
+                         if(document.getElementById('no_select_event_remove'))
+                            {
+                                $('#no_select_event_remove').remove();
+                            }
+                         $('#diveditarevento').append('<div class="overlay "></div><div class="loading-img"></div>');
+                         $('#divcalendario').append('<div class="overlay "></div><div class="loading-img"></div>');
+                          $.ajax({
+                            url: '{{path('feriado_delete_ajax')}}',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                 id:   $('#identificador').val(),
+                                rango: $('#editfechaferiado').val(),
+                                descripcion: $('#editdescripcion').val(),
+                                empresa:{{app.user.empresa.id}}
+                            },                          
+                            success: function(result) {
+                                
+                                //$('#calendar').fullCalendar("removeEvents");        
+                                //$('#calendar').fullCalendar('addEventSource', events);      
+                                $('#calendar').fullCalendar('refetchEvents');
+                                 $('#editdescripcion').val('');
+                                $('#editfechaferiado').val('');
+                                $('.overlay').remove();
+                                $('.loading-img').remove();
+                                if(!document.getElementById('mensajecorrecto'))
+                                    {
+                                         $( '<div id="mensajecorrecto" style="width:90%;margin-left:5%;" class="alert alert-success alert-dismissable">'+
+                                        '<i class="fa fa-check"></i>'+
+                                        '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+
+                                        '<b>Informaci&oacute;n!</b> <span>'+result+'</span>'+
+                                    '</div>' ).insertBefore( "#left_container" );
+                                    }
+                               
+                            }
+                            });
+                    }
+              }
+              
+             
+                
+            $(function() {
+            
+                $('#calendar').fullCalendar({
+                    //theme: true,
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    buttonText: {//This is to add icons to the visible buttons
+                        prev: "<span class='fa fa-caret-left'></span>",
+                        next: "<span class='fa fa-caret-right'></span>",
+                        today: 'hoy',
+                        month: 'mes',
+                        week: 'semana',
+                        day: 'dia'
+                    },
+                    
+                    events: 
+                        {
+                            url: '{{path('feriado_load_ajax')}}',
+                            type: 'POST',
+                            dataType: "json",
+                            data: {
+                                comienzo:getInitDateOfCalendar,
+                                fin: getEndDateOfCalendar
+                            },                           
+                            error: function() {
+                                alert('A ocurrido un error mientras se cargaban los eventos!');
+                            },
+                            className:"bg-blue-gradient"
+                           
+                            
+                           
+                        },
+                         timeFormat: 'H:mm{ - H:mm}',
+                         eventClick: function(calEvent, jsEvent, view) {
+
+                            //alert('Event: ' + calEvent.title);
+                            //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                            //alert('View: ' + view.name);
+                            if(calEvent.end != null)
+                            {
+                                var eventTime = $.fullCalendar.formatDate(calEvent.start, "MM/dd/yyyy  H:ss")+" - "+
+                                                 $.fullCalendar.formatDate(calEvent.end, "MM/dd/yyyy  H:ss");
+                               // $('#editfechaferiado').val((calEvent.start.getMonth()+1)+'/'+calEvent.start.getDate()+'/'+calEvent.start.getFullYear()+' - '+(calEvent.end.getMonth()+1)+'/'+calEvent.end.getDate()+'/'+calEvent.end.getFullYear())
+                               $('#editfechaferiado').val(eventTime)
+                            }
+                            else
+                            {
+                                 var eventTime = $.fullCalendar.formatDate(calEvent.start, "MM/dd/yyyy  h:ssTT")+" - "+
+                                                 $.fullCalendar.formatDate(calEvent.start, "MM/dd/yyyy  h:ssTT");
+                                //$('#editfechaferiado').val((calEvent.start.getMonth()+1)+'/'+calEvent.start.getDate()+'/'+calEvent.start.getFullYear()+' - '+(calEvent.start.getMonth()+1)+'/'+calEvent.start.getDate()+'/'+calEvent.start.getFullYear())
+                                $('#editfechaferiado').val(eventTime)
+                            }
+                            $('#identificador').val(calEvent.id);
+                            $('#editdescripcion').val(calEvent.title);
+                            $('#editdescripcion').attr('readOnly',false);
+                            //$('#editfechaferiado').daterangepicker();
+                            $('#editfechaferiado').daterangepicker({timePicker: true, timePickerIncrement: 5, format: 'MM/DD/YYYY h:mm A'});
+                            //alert($('#identificador').val());
+                            
+                            $(this).css('border-color', 'red');
+
+                        }
+                   // editable: true,
+                    //droppable: false, // this allows things to be dropped onto the calendar !!!
+                   /* drop: function(date, allDay) 
+                    { // this function is called when something is dropped
+
+                        // retrieve the dropped element's stored Event Object
+                       // var originalEventObject = $(this).data('eventObject');
+
+                        // we need to copy it, so that multiple events don't have a reference to the same object
+                       // var copiedEventObject = $.extend({}, originalEventObject);
+
+                        // assign it the date that was reported
+                       // copiedEventObject.start = date;
+                       // copiedEventObject.allDay = allDay;
+                      //  copiedEventObject.backgroundColor = $(this).css("background-color");
+                      //  copiedEventObject.borderColor = $(this).css("border-color");
+
+                        // render the event on the calendar
+                        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                        //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                        // is the "remove after drop" checkbox checked?
+                       // if ($('#drop-remove').is(':checked')) {
+                            // if so, remove the element from the "Draggable Events" list
+                           // $(this).remove();
+                       // }
+
+                    }*/
+                });
+
+                /* ADDING EVENTS */
+                //var currColor = "#f56954"; //Red by default
+                //Color chooser button
+                //var colorChooser = $("#color-chooser-btn");
+                //$("#color-chooser > li > a").click(function(e) {
+                  //  e.preventDefault();
+                    //Save color
+                  //  currColor = $(this).css("color");
+                    //Add color effect to button
+                   // colorChooser
+                            //.css({"background-color": currColor, "border-color": currColor})
+                           // .html($(this).text()+' <span class="caret"></span>');
+               // });
+                /*$("#add-new-event").click(function(e) {
+                    e.preventDefault();
+                    //Get value and make sure it is not null
+                    var val = $("#new-event").val();
+                    if (val.length == 0) {
+                        return;
+                    }
+
+                    //Create event
+                    var event = $("<div />");
+                    event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+                    event.html(val);
+                    $('#external-events').prepend(event);
+
+                    //Add draggable funtionality
+                    ini_events(event);
+
+                    //Remove event from text input
+                    $("#new-event").val("");
+                });*/
+            });
+        </script>
+        {% endblock %}
+  
+  

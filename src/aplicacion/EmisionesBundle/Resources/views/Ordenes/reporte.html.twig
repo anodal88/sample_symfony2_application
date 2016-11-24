@@ -1,0 +1,213 @@
+
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+        
+    {% block logo %}
+        <img src="{{asset('bundles/base/img/logos/logo1.png')}}" style="width: 20%;" alt="cross"/>
+    {% endblock%}
+        
+   {% block projectname %}
+        CrossFire
+   {% endblock %}
+        
+ {% block sidebar %} 
+                        <li class="">
+                            <a href="{{path('index')}}">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('ordenes')}}">
+                                <i class="fa fa-plane"></i> <span>Emisiones</span> 
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{{path('index')}}">
+                                <i class="fa fa-bar-chart-o"></i> <span>Reporte</span>
+                            </a>
+                        </li>
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Ordenes</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Solicitudes</li>
+ {% endblock %}
+  
+ {% block area %}
+     
+     <div class="col-sm-9 box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">Todas las &Oacute;rdenes</h3>
+                                    <div class="pull-right box-tools">                      
+                                        
+                                        <button id="graficar" class="btn btn-primary btn-sm" type="button"><i class="fa  fa-wrench"></i> Graficar</button>                                        
+                                    </div>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <!-- Date range -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                            <label>Agente:</label>
+                                            <select class="form-control" id="agente">
+                                                <option value="-1" selected="selected" >[ Seleccione Agente ]</option>
+                                                {%for agente in agentes%}
+                                                    <option value="{{agente.id}}">{{agente.id}}</option>
+                                                {%else%}
+                                                    <option value="-2">No existen agentes definidos</option>
+                                                {%endfor%}
+                                                
+                                            </select>
+                                        </div>
+                                    <div class="form-group col-lg-4">
+                                        <label>Per&iacute;odo:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                                <input type="text" class="form-control pull-right" placeholder="[ Seleccione Per&iacute;odo ]" name="rangedate" id="rangedate"/>
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    <div class="form-group col-lg-4">
+                                            <label>Estado:</label>
+                                            <select class="form-control" id="estado">
+                                                 <option value="-1" selected="selected" >[ Seleccione Estado ]</option>
+                                                {%for estado in estados%}
+                                                    <option value="{{estado.id}}">{{estado.nombre}}</option>
+                                                {%else%}
+                                                    <option value="-2">No existen estados definidos</option>
+                                                {%endfor%}
+                                                
+                                            </select>
+                                        </div>
+                                    
+                                    </div>
+                                
+                                    <br><br><br>
+                                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                    <!-- Date and time range -->
+                                    <!-- Data from www.netmarketshare.com. Select Browsers => Desktop share by version. Download as tsv. -->
+
+                                </div>
+                                
+     </div><!-- /.box -->
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}
+      <script src="{{ asset('bundles/base/js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/modules/exporting.js') }}" type="text/javascript"></script>
+      
+           <script type="text/javascript">
+              
+
+           $(document).ready(function(){
+               
+                //Date range picker
+                $('#rangedate').daterangepicker();
+                
+               
+            });
+         
+        </script>
+        		<style type="text/css">
+
+		</style>
+	
+                <script type="text/javascript">
+              function cerrar()
+              {
+                  $('#mask').remove();                  
+              }
+              
+           $(document).ready(function(){
+               $("#graficar").click(function(){
+                   
+                   $( "body" ).append(
+                           '<div class="modal in" id="mask" style="width:100%; height:100%; display: block;background: #333;opacity:0.9;" aria-hidden="false">'
+                           +'<div class="modal-content" style="margin-left:40%;margin-top:25%;width:20%;">'
+                           +'<div id="result" class="modal-body"><button onclick="cerrar()" id="btnclose" type="button" class="pull-right close" style="visibility: hidden;margin-top:-15px;margin-right:-15px;"><i class="fa fa-times-circle"></i></button>'
+                           +'<p id="msg" style="margin-top:10px;"><img style="margin-left:10px;width:20px;height:20px;" src="{{asset('bundles/base/img/ajax-loader.gif')}}" atl="" />'
+                           +'<span  > Construyendo Gr&aacute;fica ....<span></p></div></div></div>');
+                  
+                    $.ajax({
+                            url:"{{path('make_reporte')}}",
+                            method:'post',
+                            data:{
+                                'rangedate':$("#rangedate").val(),
+                                'usuario':{{app.user.id}},
+                                'agente':$("#agente").val(),
+                                'estado':$("#estado").val()
+                            },
+                            success:function(result){
+                             
+                                $('#btnclose').css({ "visibility": "visible"});
+                                $('#mask').remove();
+                                var datos = JSON.parse(result);
+                               $('#container').highcharts({
+                                        chart: {
+                                            plotBackgroundColor: null,
+                                            plotBorderWidth: 0,
+                                            plotShadow: false
+                                        },
+                                        title: {
+                                            text: 'Ordenes<br>'+'<span style="font-size:10px;">'+$("#rangedate").val()+'</span>',
+                                            align: 'center',
+                                            verticalAlign: 'middle',
+                                            y: 50
+                                        },
+                                        tooltip: {
+                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                        },
+                                        plotOptions: {
+                                            pie: {
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    distance: -50,
+                                                    style: {
+                                                        fontWeight: 'bold',
+                                                        color: 'white',
+                                                        textShadow: '0px 1px 2px black'
+                                                    }
+                                                },
+                                                startAngle: -90,
+                                                endAngle: 90,
+                                                center: ['50%', '75%']
+                                            }
+                                        },
+                                        series: [{
+                                            type: 'pie',
+                                            name: 'Procesadas',
+                                            innerSize: '65%',
+                                            data: 
+                                             [
+                                                [datos[0]['name'],datos[0]['value']],
+                                                [datos[1]['name'],datos[1]['value']],
+                                                [datos[2]['name'],datos[2]['value']]
+                                             ]
+                          
+                                             
+                                            
+                                        }]
+                                    });
+
+                            }});
+                
+                        }); 
+        
+        });
+        </script>
+  {% endblock %}

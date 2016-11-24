@@ -1,0 +1,254 @@
+
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+
+        
+ {% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:counter.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Ordenes</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Solicitudes</li>
+ {% endblock %}
+  
+ {% block area %}
+     <div class="col-sm-12 ">
+         <div id="reporte-container" class=" box box-primary">
+                                <div class="box-header">
+                                
+                                    <div class="pull-right box-tools pull-left">
+                                        
+                                        <a href="#" onclick="loadreporte();" title="" data-toggle="tooltip"  class="btn btn-circle btn-sm btn-bg bg-navy" data-original-title="Actualizar"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                    <div class="box-tools pull-right">
+                                                <button id="ordenesdaterange" class=" btn btn-sm btn-primary pull-right">
+                                                                <i class="fa fa-calendar"></i> Hoy
+                                                                <i class="fa fa-caret-down"></i>
+                                                </button>
+                                                    {#Seleccion de estados #}
+                                                    <div  class="btn-group" style="margin-right: 5px;">
+                                                      <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" id="state-chooser-btn" value="Pendiente" type="button" ><i class="fa fa-clock-o"></i> Pendientes <span class="caret"></span></button>
+                                                        <ul id="state-chooser" class="dropdown-menu">
+                                                            {%for item in estados%}
+                                                            <li><a id="{{item.nombre}}"  href="#" class="active"><i class="{{item.icono}}"></i> {{item.nombre}}s</a></li>
+                                                            
+                                                            {%else%}
+                                                                <li><a id="-1" href="#" class=""><i  class="fa fa-list"></i> No existen estados</a></li>
+                                                            {%endfor%}
+                                                            <li class="divider"></li>
+                                                            <li><a id="all" href="#" class=""><i  class="fa fa-list"></i> Todos los Estados</a></li>
+                                                        </ul>
+                                                    </div> 
+                                                {#Seleccion de agentes #}
+                                                    <div  class="btn-group" style="margin-right: 5px;">
+                                                      <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" id="agente-chooser-btn" value="all" type="button" ><i class="fa fa-users"></i> Todos los Agentes <span class="caret"></span></button>
+                                                        <ul id="agente-chooser" class="dropdown-menu">
+                                                            {%for a in agentes%}
+                                                            <li><a id="{{a.id}}"  href="#" class="active"><i class="fa fa-user"></i> {{a.nombre~' '~a.apellidos}}</a></li>
+                                                            
+                                                            {%else%}
+                                                                <li><a id="-1" href="#" class=""><i  class="fa fa-list"></i> No existen agentes</a></li>
+                                                            {%endfor%}
+                                                            <li class="divider"></li>
+                                                            <li><a id="all" href="#" class=""><i class="fa fa-users"></i>Todos los Agentes</a></li>
+                                                            
+                                                        </ul>
+                                                    </div> 
+                                            
+                                            </div>
+                                    {#<div class="pull-right box-tools">                      
+                                        
+                                        <button id="graficar" class="btn btn-primary btn-sm" type="button"><i class="fa  fa-wrench"></i> Graficar</button>                                        
+                                    </div>#}
+                                </div><!-- /.box-header -->
+                                   <hr>
+                                <div class="box-body">
+                               
+                                    <div id="reporte" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                    <!-- Date and time range -->
+                                    <!-- Data from www.netmarketshare.com. Select Browsers => Desktop share by version. Download as tsv. -->
+
+                                </div>
+                                
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}      
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts-more.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/modules/exporting.js') }}" type="text/javascript"></script>      
+      
+           <script type="text/javascript">
+              
+                
+                //Los estados
+                var stateChooser = $("#state-chooser-btn");
+                $("#state-chooser > li > a").click(function(e) {
+                    e.preventDefault();
+                    //Save color
+                    currColor = $(this).css("color");
+                    //Get a id to set of btn value
+                    currlinkId= $(this).attr("id");
+                    stateChooser
+                            .attr('value',currlinkId)
+                            //.css({"background-color": currColor, "border-color": currColor})
+                            .html($(this).html()+' <span class="caret"></span>');
+                 //Cargar los datos de la tabla cuando seleccione el filtro           
+                loadreporte()
+                });
+                
+                //Los agentes
+                var agenteChooser = $("#agente-chooser-btn");
+                $("#agente-chooser > li > a").click(function(e) {
+                    e.preventDefault();
+                    //Save color
+                    currColor = $(this).css("color");
+                    //Get a id to set of btn value
+                    currlinkId= $(this).attr("id");
+                    agenteChooser
+                            .attr('value',currlinkId)
+                            //.css({"background-color": currColor, "border-color": currColor})
+                            .html($(this).html()+' <span class="caret"></span>');
+                 //Cargar los datos de la tabla cuando seleccione el filtro           
+                 loadreporte()
+                });
+         
+                function buildGraph()
+                {
+                      $.ajax({
+                            url:"{{path('counter_make_reporte')}}",
+                            method:'post',
+                            data:{
+                                'rangedate':$('#ordenesdaterange').val(),
+                                'usuario':{{app.user.id}},
+                                'agente':$("#agente-chooser-btn").val(),
+                                'estado':$("#state-chooser-btn").val()
+                            },
+                            success:function(result){
+                             
+                              alert('cargados los datos')
+
+                            }});
+                }
+                
+                function loadreporte()
+                {
+                    //Mostrar la mascara para preparar la carga de datos
+                    $('#reporte-container').append('<div id="reportemask" class="overlay"></div>');
+                    $('#reporte-container').append('<div id="reporteloader" class="loading-img"></div>');
+                      $.ajax({
+                            url: '{{path('counter_make_reporte')}}',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                'rangedate':$('#ordenesdaterange').val(),
+                                'usuario':{{app.user.id}},
+                                'agente':$("#agente-chooser-btn").val(),
+                                'estado':$("#state-chooser-btn").val()
+                            },                          
+                            success: function(result) {                                     
+                          
+                                    // Build the chart
+                                    $('#reporte').highcharts({
+                                        chart: {
+                                            plotBackgroundColor: null,
+                                            plotBorderWidth: null,
+                                            plotShadow: false
+                                        },
+                                        title: {
+                                            text: 'Emisiones, Anulaciones y Revisiones'
+                                        },
+                                        tooltip: {
+                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                        },
+                                        plotOptions: {
+                                            pie: {
+                                                allowPointSelect: true,
+                                                cursor: 'pointer',
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                                    style: {
+                                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                                    },
+                                                    connectorColor: 'silver'
+                                                }
+                                            }
+                                        },
+                                        series: [{
+                                            type: 'pie',
+                                            name: 'Ordenes',
+                                            data: result
+                                        }]
+                                    });
+                              //Quitar la mascara para que se ve ael reporte
+                                $('#reportemask').remove();
+                                $('#reporteloader').remove();
+                            }
+                            });
+                }
+           $(document).ready(function(){
+               // Radialize the colors Pintar el grafico
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+                $('#ordenesdaterange').html('<i class="fa fa-calendar"></i> '+ moment().hours(9).minutes(0).seconds(0).format('H:mm MMMM D, YYYY') + ' - ' + moment().hours(19).minutes(0).seconds(0).format('H:mm MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                 $('#ordenesdaterange').val(moment().hours(9).minutes(0).seconds(0).format('MM/DD/YYYY H:mm') + ' - ' + moment().hours(19).minutes(0).seconds(0).format('MM/DD/YYYY H:mm'));
+                 $('#ordenesdaterange').daterangepicker(
+                        {
+                            timePicker: true,
+                            timePickerIncrement: 5,
+                            timePicker12Hour:false,
+                            format: 'MM/DD/YYYY H:mm',
+                            ranges: {
+                                'Hoy': [moment().hours(9).minutes(0).seconds(0), moment().hours(19).minutes(0).seconds(0)],
+                                'Ayer': [moment().subtract('days', 1).hours(9).minutes(0).seconds(0), moment().subtract('days', 1).hours(19).minutes(0).seconds(0)],
+                                'Ultimos 7 dias': [moment().subtract('days', 6).hours(9).minutes(0).seconds(0), moment().hours(19).minutes(0).seconds(0)],
+                                'Ultimos 30 dias': [moment().subtract('days', 29).hours(9).minutes(0).seconds(0), moment().hours(19).minutes(0).seconds(0)],
+                                'Este Mes': [moment().startOf('month').hours(9).minutes(0).seconds(0), moment().endOf('month').hours(19).minutes(0).seconds(0)],
+                                'Mes Anterior': [moment().subtract('month', 1).startOf('month').hours(9).minutes(0).seconds(0), moment().subtract('month', 1).endOf('month').hours(19).minutes(0).seconds(0)]
+                            },
+                            startDate: moment(),
+                            endDate: moment()
+                        },
+                function(start, end) {
+                   
+                    $('#ordenesdaterange').html('<i class="fa fa-calendar"></i> '+ start.format('H:mm MMMM D, YYYY') + ' - ' + end.format('H:mm MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                    $('#ordenesdaterange').val(start.format('MM/DD/YYYY H:mm') + ' - ' + end.format('MM/DD/YYYY H:mm'));
+                    //Cargar la tabla con los parametros seleccionados
+                    loadreporte()              
+                }
+                );
+               loadreporte()
+                
+               
+            });
+         
+        </script>
+
+              
+        
+     
+     
+  {% endblock %}

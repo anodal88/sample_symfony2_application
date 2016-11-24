@@ -1,0 +1,241 @@
+EmisionesBundle_supervisor_dashboard:
+    path:     /supervisor/dashboard/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexSupervisor"}
+    
+supervisor_all_orders:
+    path:     /all/orders/
+    defaults: { _controller: "EmisionesBundle:Supervisor:allOrders" }
+    
+supervisor_load_ordenes:
+    path:     /load/ordenes/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadOrdenes" }
+    
+supervisor_report_pie_window:
+    path:     /reporte/ventana/pie
+    defaults: { _controller: "EmisionesBundle:Supervisor:report_pie_window" }
+    
+supervisor_report_porcentaje_vs_estados:
+    path:     /reportes/porcentaje/estados
+    defaults: { _controller: "EmisionesBundle:Supervisor:maximizarPorcentajeVsEstados" }
+    
+supervisor_report_estados_vs_counters:
+    path:     /reportes/estados/counters
+    defaults: { _controller: "EmisionesBundle:Supervisor:maximizarEstadosVsCounters" }
+    
+supervisor_report_tipos_vs_counters:
+    path:     /reportes/tipos/counters
+    defaults: { _controller: "EmisionesBundle:Supervisor:maximizarTiposVsCounters" }
+    
+supervisor_load_pie:
+    path:     /load/pie/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadPie" }
+    
+supervisor_load_bar:
+    path:     /load/bar/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadBar" }
+    
+supervisor_load_line:
+    path:     /load/line/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadLine" }
+
+supervisor_load_incumplimientoSla:
+    path:     /load/incumplimientossla/
+    defaults: { _controller: "EmisionesBundle:Supervisor:ReporteIncumplimientoSla" }
+
+supervisor_index_agentes:
+    path:     /agentes/
+    defaults: { _controller: "EmisionesBundle:Supervisor:index" }
+    
+supervisor_index_daemons:
+    path:     /daemons/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexDaemons" }
+    
+supervisor_index_counters:
+    path:     /counters/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexCounters" }
+    
+supervisor_index_agencias:
+    path:     /agencias/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexAgencias" } 
+    
+supervisor_index_cola:
+    path:     /cola/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexCola" } 
+    
+supervisor_index_configuraciones:
+    path:     /all/configuraciones/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexConfiguraciones" } 
+    
+supervisor_load_cola:
+    path:     /load/cola/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadCola" }
+    
+supervisor_load_daemons:
+    path:     /load/daemons/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadDaemons" }
+    
+supervisor_load_configuraciones:
+    path:     /load/configuraciones/
+    defaults: { _controller: "EmisionesBundle:Supervisor:loadConfiguraciones" }
+    
+supervisor_reasignar_orden:
+    path:     /reasignar/orden
+    defaults: { _controller: "EmisionesBundle:Supervisor:reasignarOrden" } 
+    
+supervisor_asignar_orden_manual:
+    path:     /asignar/orden/manual/
+    defaults: { _controller: "EmisionesBundle:Supervisor:asignarOrdenManual" }
+    
+load_agentes_ajax:
+    path:     /load/agentes/ajax
+    defaults: { _controller: "EmisionesBundle:Supervisor:load_ajax_agentes" }
+    
+load_counters_ajax:
+    path:     /load/counters/ajax
+    defaults: { _controller: "EmisionesBundle:Supervisor:load_ajax_counters" }
+    
+supervisor_load_agencias_ajax:
+    path:     /load/agencias/ajax
+    defaults: { _controller: "EmisionesBundle:Supervisor:load_ajax_agencias" }
+    
+supervisor_agente_edit:
+    path:     /agente/{id}/edit/
+    defaults: { _controller: "EmisionesBundle:Supervisor:edit" }
+    
+supervisor_counter_edit:
+    path:     /counter/{id}/edit/
+    defaults: { _controller: "EmisionesBundle:Supervisor:editCounter" }
+    
+supervisor_agencia_edit:
+    path:     /agencia/{id}/edit/
+    defaults: { _controller: "EmisionesBundle:Supervisor:editAgencia" }
+    
+supervisor_empresa_edit:
+    path:     /empresa/{id}/edit/
+    defaults: { _controller: "EmisionesBundle:Supervisor:editEmpresa" }
+    
+supervisor_configuracion_edit:
+    path:     /configuracion/{id}/edit/
+    defaults: { _controller: "EmisionesBundle:Supervisor:editConfiguracion" }
+    
+supervisor_configuracion_remove:
+    path:     /configuracion/{id}/remove/
+    defaults: { _controller: "EmisionesBundle:Supervisor:removeConfiguracion" }
+    
+supervisor_agente_edit_clave:
+    path:     /agente/{id}/render/agente/
+    defaults: { _controller: "EmisionesBundle:Supervisor:editClave" }
+    
+supervisor_counter_edit_clave:
+    path:     /counter/{id}/render/counter/
+    defaults: { _controller: "EmisionesBundle:Supervisor:editClaveCounter" }
+    
+supervisor_lock_unlock_agente:
+    path:     /lock_unlock/agente/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:lock_unlock" }
+    
+supervisor_lock_unlock_counter:
+    path:     /lock_unlock/counter/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:lock_unlockCounter" }
+    
+supervisor_member_unmember_agencia:
+    path:     /member_unmember/{id}/{id_empresa}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:member_unmember" }
+    
+supervisor_unable_enable_agente:
+    path:     /unable_enable/agente/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:unable_enable" }
+    
+supervisor_unable_enable_counter:
+    path:     /unable_enable/counter/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:unable_enableCounter" }
+    
+supervisor_activar_desactivar_configuracion:
+    path:     /activar/desactivar/configuracion/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:activar_desactivarConfiguracion" }
+    
+supervisor_activar_desactivar_daemon:
+    path:     /activar/desactivar/daemon/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:activar_desactivarDaemon" }
+    
+supervisor_copiar_configuracion:
+    path:     /copiar/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:copiarConfiguracion" }
+    
+supervisor_agente_update:
+    path:     /agente/{id}/update/
+    defaults: { _controller: "EmisionesBundle:Supervisor:update" } 
+    
+supervisor_activar_desactivar_plan_piloto:
+    path:     /plan/plapiloto/{agencia}/{aerolinea}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:activar_desactivarPlanPiloto" }
+    
+supervisor_index_plan_piloto:
+    path:     /conf/planpiloto/
+    defaults: { _controller: "EmisionesBundle:Supervisor:indexPlanPiloto" }
+    
+supervisor_counter_update:
+    path:     /counter/{id}/update/
+    defaults: { _controller: "EmisionesBundle:Supervisor:updateCounter" } 
+    
+supervisor_configuracion_update:
+    path:     /configuracion/{id}/update/
+    defaults: { _controller: "EmisionesBundle:Supervisor:updateConfiguracion" } 
+    
+supervisor_empresa_update:
+    path:     /empresa/{id}/update/
+    defaults: { _controller: "EmisionesBundle:Supervisor:updateEmpresa" } 
+    
+supervisor_agencia_update:
+    path:     /agencia/{id}/update/
+    defaults: { _controller: "EmisionesBundle:Supervisor:updateAgencia" }  
+    
+supervisor_agente_update_clave:
+    path:     /agente/{id}/update/clave/
+    defaults: { _controller: "EmisionesBundle:Supervisor:updateClave" }
+    
+supervisor_counter_update_clave:
+    path:     /counter/{id}/update/clave/
+    defaults: { _controller: "EmisionesBundle:Supervisor:updateClaveCounter" }
+    
+supervisor_new_agente:
+    path:     /agente/new/
+    defaults: { _controller: "EmisionesBundle:Supervisor:new" }
+    
+supervisor_new_counter:
+    path:     /counter/new/
+    defaults: { _controller: "EmisionesBundle:Supervisor:newCounter" }
+    
+supervisor_new_agencia:
+    path:     /agencia/new/
+    defaults: { _controller: "EmisionesBundle:Supervisor:newAgencia" }
+    
+supervisor_new_configuracion:
+    path:     /configuracion/new/
+    defaults: { _controller: "EmisionesBundle:Supervisor:newConfiguracion" }
+    
+supervisor_register_agente:
+    path:     /agente/register/
+    defaults: { _controller: "EmisionesBundle:Supervisor:register" }
+    
+supervisor_register_counter:
+    path:     /counter/register/
+    defaults: { _controller: "EmisionesBundle:Supervisor:registerCounter" }
+    
+supervisor_register_agencia:
+    path:     /agencia/register/
+    defaults: { _controller: "EmisionesBundle:Supervisor:registerAgencia" }
+    
+supervisor_register_configuracion:
+    path:     /configuracion/register/
+    defaults: { _controller: "EmisionesBundle:Supervisor:registerConfiguracion" }
+    
+supervisor_asignar_manual:
+    path:     /asignar/manual/{id}/
+    defaults: { _controller: "EmisionesBundle:Supervisor:asignarManual" }
+    
+
+
+    
+
+

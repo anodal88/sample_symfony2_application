@@ -1,0 +1,339 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+{% block sidebar %} 
+         {% include 'EmisionesBundle:Menu:submenucounter.html.twig' %}
+ {% endblock %}
+
+   
+ {%block titlepage %}
+     <h1>
+        Ordenes
+        <small>Procesar</small>
+    </h1>
+ {%endblock%}
+ 
+ {% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li> <a href="{{path('EmisionesBundle_queue_manger')}}"><i class="fa fa-align-justify"></i> Ordenes</a></li>
+     <li class="active">Detalle</li>
+ {% endblock %}
+
+{% block area -%}
+    
+    <div class="col-md-12">
+
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-right box-tools pull-left">                                        
+                                        <a href="{{path('EmisionesBundle_queue_manger')}}" title="" data-toggle="tooltip"  class="btn btn-circle btn-sm btn-bg bg-blue" data-original-title="Cola"><i class="fa fa-sort-numeric-asc"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right"><i class="fa fa-suitcase"></i> {{entity.agente.agencia}}&nbsp;&nbsp;{{entity.agente.agencia.ruc}}</h3>
+                                </div>
+                                    <hr>
+                                    <div class="box-body">
+                                        <table class="table table-bordered table-responsive table-condensed table-hover table-striped">
+                                            <thead>
+                                                
+                                            <th style="width: 15%;">Atributos</th><th>Valor</th>
+                                            </thead> 
+                                            {%if entity.adjunto%}
+                                                <tr>
+                                                    <th>Adjunto</th>
+                                                    <td>
+                                                        <a onclick="openAdjunto('{{entity.adjunto}}');" href="#"><i class="fa fa-clipboard"></i> {{entity.adjunto}}</a>
+                                                    </td>
+                                                </tr>
+                                            {%endif%}
+                                            <tr>
+                                                <th>N&uacute;mero de Orden</th>
+                                                <td>
+                                                     {{entity.gettipo}}&nbsp;&nbsp;&nbsp;{{entity.numeroOrden}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de Solicitud</th>
+                                                <td>
+                                                    {{entity.fecha|date("d - M - Y") }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Agente</th>
+                                                <td>
+                                                    {{entity.agente}}
+                                                </td>                                               
+                                            </tr>
+                                            <tr>
+                                                <th>Counter</th>
+                                                <td>
+                                                    {%if entity.usuario%}
+                                                    {{entity.usuario}}
+                                                    {%else%}
+                                                    <b class="text-red">NO ASIGNADA</b>
+                                                    {%endif%}
+                                                </td>                                               
+                                            </tr>
+                                            <tr>
+                                                <th>Orden a Revisar</th>
+                                                <td>
+                                                    {{entity.tarjet}}
+                                                </td>                                               
+                                            </tr>
+                                            <tr>
+                                                 <th>Prioridad</th>
+                                                <td>
+                                                    {{entity.prioridad}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>GDS</th>
+                                                <td>
+                                                    {{entity.gds}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ciudad</th>
+                                                <td>
+                                                    {{entity.ciudadDestino}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                             <th>FEE de Servicios</th>
+                                                <td>
+                                                    {{entity.feeServicios}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tipo de Boleto</th>
+                                                <td>
+                                                    {{entity.tipoBoleto}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <tr>
+                                            <th>PNR</th>
+                                                <td>
+                                                    <textarea readonly="true" style="max-width: 98%;min-width: 99%;width: 98%;min-height: 350px;max-height: 350px;">{{entity.reservaPnr}}</textarea>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                            <th>Tarifa Reserva</th>
+                                                <td>
+                                                    <textarea readonly="true" style="max-width: 98%;min-width: 99%;width: 98%;min-height: 350px;max-height: 350px;">{{entity.tarifaReserva}}</textarea>                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <th>Datos Boleto</th>
+                                                <td>
+                                                    <textarea readonly="true" style="max-width: 98%;min-width: 99%;width: 98%;min-height: 150px;max-height: 150px;">{{entity.datosBoleto}}</textarea>                                                   
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estado</th>
+                                                <td>
+                                                    <b class="text-orange">{{entity.estado}}</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <th>Comentarios M&M</th>
+                                                <td>
+                                                    {%if entity.comentario%}
+                                                        <textarea readonly="true" style="max-width: 98%;min-width: 99%;width: 98%;min-height: 250px;max-height: 250px;"> {{entity.comentario}}</textarea>                                                       
+                                                     {%else%}
+                                                        --
+                                                     {%endif%}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Record GDS</th>
+                                                <td>
+                                                    {{entity.recordGds}}
+                                                </td>
+                                            </tr>
+                                             <tr>
+                                            <th>Observaciones</th>
+                                                <td>
+                                                    {%if entity.observaciones%}
+                                                        <textarea readonly="true" style="max-width: 98%;min-width: 99%;width: 98%;min-height: 250px;max-height: 250px;"> {{entity.observaciones}}</textarea>                                                       
+                                                     {%else%}
+                                                        --
+                                                     {%endif%}
+                                                </td>
+                                            </tr>
+                                             <tr>
+                                                <th>Tour Code</th>
+                                                <td>
+                                                    {{entity.tourcode}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                             <th>N&uacute;mero de Pasajeros </th>
+                                                <td>
+                                                    {{entity.numPasajeros}}
+                                                </td>
+                                            </tr>
+                                        
+                                        </table>
+                                   {#-formas de pagos-#}
+                                    <hr>
+                                   {%for fp in entity.formasPagos%} 
+                                        {%if fp.tipo == 'Tarjeta Credito'%}
+                                         <div class="box box-solid box-primary">
+                                            <div class="box-header ">                                    
+                                                <h3 class="box-title pull-right"><i class="fa fa-credit-card"></i> Tarjeta de Cr&eacute;dito</h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table class="table table-responsive table-bordered table-condensed table-striped">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <th>Emisor VTC</th>
+                                                            <td>{{ fp.emisorVtc }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Aerolinea</th>
+                                                            <td>{{ fp.aerolinea }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Banco Emisor Tarjeta</th>
+                                                            <td><b class="text-red">{{ fp.bancoEmisorTarjeta }}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Tipo Tarjeta</th>
+                                                            <td>{{ fp.tipoTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>N&uacute;mero Tarjeta</th>
+                                                            <td>{{ fp.numeroTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Propietario</th>
+                                                            <td>{{ fp.propietario }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Vence</th>
+                                                            <td>{{ fp.vence|date('m/Y') }}</td>
+                                                        </tr>          
+                                                        <tr>
+                                                            <th>Tipo Pago</th>
+                                                            <td>{{ fp.tipoPago }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Plazo</th>
+                                                            <td>{{ fp.plazo }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Tipo Autorizaci&oacute;n</th>
+                                                            <td>{{ fp.tipoAutorizacion }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>C&oacute;digo Seguridad</th>
+                                                            <td>{{ fp.pin }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>N&uacute;mero Autorizaci&oacute;n</th>
+                                                            <td>{{ fp.numeroAutorizacion }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Valor Tarjeta</th>
+                                                            <td>$ {{ fp.valorTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Inter&eacute;s Tarjeta</th>
+                                                            <td>$ {{ fp.interesTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Valor Total</th>
+                                                            <td>$ {{ fp.valorTotal }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Paga a Pasajeros</th>
+                                                            <td>{{ fp.pagoPasajeros }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                </div><!-- /.box-body -->
+                                          </div>
+                                        {%endif%}
+                                        {%endfor%}
+                                        
+                                        {#----DETB------#}
+                                       {%for fp in entity.formasPagos%} 
+                                        {%if fp.tipo == 'DETB'%}
+                                            <div class="box box-solid box-primary">
+                                            <div class="box-header ">                                    
+                                                <h3 class="box-title pull-right"><i class="fa fa-barcode"></i> {{ fp.transaccion }}</h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table class="table table-responsive table-bordered table-condensed table-striped">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Banco</th>
+                                                                <td>{{ fp.banco }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>N&uacute;mero Documento</th>
+                                                                <td>{{ fp.numeroDocumento }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Valor</th>
+                                                                <td>{{ fp.valor }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Transacci&oacute;n</th>
+                                                                <td>{{ fp.transaccion }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div><!-- /.box-body -->
+                                          </div>
+                                        {%endif%}
+                                        {%endfor%}
+                                        {#---------Pagos Directos--------------#}
+                                        {%for fp in entity.formasPagos%} 
+                                        {%if fp.tipo == 'Pago Directo'%}
+                                            <div class="box box-solid box-primary">
+                                            <div class="box-header ">                                    
+                                                <h3 class="box-title pull-right"><i class="fa fa-money"></i> Pago Directo</h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table class="table table-responsive table-bordered table-condensed table-striped">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <th>Tipo Pago</th>
+                                                            <td>{{ fp.tipoPago }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Valor</th>
+                                                            <td>{{ fp.valor }}</td>
+                                                        </tr>        
+                                                    </tbody>
+                                                </table>
+                                            </div><!-- /.box-body -->
+                                          </div>
+                                        {%endif%}
+                                   {%endfor%}
+                                    </div>
+                            </div><!-- /.box -->
+
+                            
+
+                        </div>
+    
+    
+    
+{% endblock %}
+  {% block javascripts %}
+      {{parent()}}
+     <script type="text/javascript">
+      function openAdjunto(adjunto)
+        {
+           window.open(String(adjunto)); 
+        }
+     </script>
+  {% endblock %}
+  
+
+  

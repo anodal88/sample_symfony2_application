@@ -1,0 +1,133 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+     {{parent()}}
+           {# <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />#}
+           
+{% endblock %}
+
+    
+{% block sidebar %}     
+           {%if 'ROLE_SUPERVISOR' in app.user.roles%}
+                {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+           {%else%}
+                {% include 'EmisionesBundle:Menu:counter.html.twig' %}
+           {%endif%}
+ {% endblock %}
+                        
+{%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Perfil</small>
+    </h1>
+ {%endblock%}
+ 
+{% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Editar Usuario</li>
+ {% endblock %}
+     
+{% block area %}
+     <div class="col-sm-12">
+     <div class=" box  box-primary">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        <a href="{{path('usuariointerno_show',{'id':app.user.id})}}" data-toggle="tooltip" data-original-title="Perfil" class="btn bg-navy btn-circle"><i class="fa fa-user"></i></a>                                        
+                                    </div>
+                                    <h3 class="box-title pull-right">Editar Usuario</h3>
+                                    
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                    <form action="{{path('usuariointerno_update',{'id':app.user.id})}}" {{form_enctype(edit_form) }} method="post" >
+                                            
+                                        <div style="margin-left: 40%;" class="form-group">
+                                                <img style="width: 20%;" alt="User Image" id="userimage" class="img-responsive img-rounded img-thumbnail" src="
+                                                     {%if entity.foto%}
+                                                        {{asset('uploads/usuarios/')~entity.foto}}
+                                                     {%else%}
+                                                        {{asset('uploads/usuarios/no-avatar.png')}}
+                                                     {%endif%}
+                                                     ">
+                                                {{ form_widget(edit_form.foto) }}
+                                                <button class="btn btn-xs btn-primary" type=button onclick="this.form.aplicacion_emisionesbundle_usuariointerno_foto.click()"><i class="fa fa-picture-o"></i> <span id="info" >Subir Foto</span></button>
+                                                <p class="help-block">{{form_errors(edit_form.foto)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label >{{ 'profile.show.email'|trans }}:</label>
+                                                {{ form_widget(edit_form.email) }}
+                                                <p class="help-block">{{form_errors(edit_form.email)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label >{{ 'profile.show.username'|trans }}:</label>
+                                                {{ form_widget(edit_form.username) }}
+                                                <p class="help-block">{{form_errors(edit_form.username)}}</p>
+                                            </div>
+                                        
+                                            <div class="form-group">
+                                                <label >{{ 'layout.password'|trans }}:</label>
+                                                {{ form_widget(edit_form.plainPassword) }}
+                                                <p class="help-block">{{form_errors(edit_form.plainPassword)}}</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.name'|trans }}:</label>
+                                                {{ form_widget(edit_form.nombre) }}
+                                                <p class="help-block">{{form_errors(edit_form.nombre)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.surname'|trans }}:</label>
+                                                {{ form_widget(edit_form.apellidos) }}
+                                                <p class="help-block">{{form_errors(edit_form.apellidos)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.ci'|trans }}:</label>
+                                                {{ form_widget(edit_form.ci) }}
+                                                 <p class="help-block">{{form_errors(edit_form.ci)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.sex'|trans }}:</label>
+                                                {{ form_widget(edit_form.sexo) }}
+                                                <p class="help-block">{{form_errors(edit_form.sexo)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.movil'|trans }}:</label>
+                                                {{ form_widget(edit_form.celular) }}
+                                                <p class="help-block">{{form_errors(edit_form.celular)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.phone'|trans }}:</label>
+                                                {{ form_widget(edit_form.telefono) }}
+                                                <p class="help-block">{{form_errors(edit_form.telefono)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.ext'|trans }}:</label>
+                                                {{ form_widget(edit_form.ext) }}
+                                                <p class="help-block">{{form_errors(edit_form.ext)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.boss'|trans }}:</label>
+                                                {{ form_widget(edit_form.jefe) }}
+                                                <p class="help-block">{{form_errors(edit_form.jefe)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >{{ 'layout.enterprise'|trans }}:</label>
+                                                {{ form_widget(edit_form.empresa) }}
+                                                <p class="help-block">{{form_errors(edit_form.empresa)}}</p>
+                                            </div>
+                                             
+                                                {{form_rest(edit_form)}}
+                                            <div class="footer">                                                               
+                                                <button type="submit"   class="btn bg-blue-gradient "><i class="fa fa-refresh"></i> {{ 'profile.edit.submit'|trans }}</button>  
+                  
+                                            </div>
+                                    </form>
+                                
+                                    
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+
+

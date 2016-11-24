@@ -1,0 +1,97 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+     {{parent()}}
+           {# <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />#}
+           
+{% endblock %}
+
+
+    
+{% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:agente.html.twig' %}
+ {% endblock %}
+                        
+{%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Perfil</small>
+    </h1>
+ {%endblock%}
+ 
+{% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Perfil</li>
+ {% endblock %}
+     
+{% block area %}
+     <div class="col-sm-12">
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        
+                                        <a href="{{path('agente_edit',{'id':app.user.id})}}" data-toggle="tooltip" data-original-title="Editar" class="btn bg-green btn-circle"><i class="fa fa-edit"></i></a>                                        
+                                    </div>
+                                    <h3 class="box-title pull-right">Perfil de Usuario</h3>
+                                    
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                     <table class="table table-responsive table-condensed table-bordered table-striped">
+                                            <tbody>
+                                               <img style="width: 15%;" alt="User Image" id="userimage" class="img-thumbnail text-center" src="
+                                                     {%if entity.foto%}
+                                                        {{asset('uploads/usuarios/')~entity.foto}}
+                                                     {%else%}
+                                                        {{asset('uploads/usuarios/no-avatar.png')}}
+                                                     {%endif%}
+                                                     ">
+                                                <tr>
+                                                    <th>Nombre:</th>
+                                                    <td>{{ entity.nombre }} {{ entity.apellidos }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Email:</th>
+                                                    <td>{{ entity.email }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Nombre Usuario:</th>
+                                                    <td>{{ entity.username }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>CI-DNI:</th>
+                                                    <td>{{ entity.ci }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Sexo:</th>
+                                                    <td>{{ entity.sexo }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Celular:</th>
+                                                    <td>{{ entity.celular }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Convencional:</th>
+                                                    <td>{{ entity.telefono }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Extensi&oacute;n:</th>
+                                                    <td>{{ entity.ext }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Agencia:</th>
+                                                    <td>
+                                                       {{ entity.agencia }}
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+
+

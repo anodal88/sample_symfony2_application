@@ -1,0 +1,83 @@
+EmisionesBundle_counter_dashboard:
+    path:     /counter/dashboard/
+    defaults: { _controller: "EmisionesBundle:Counter:indexCounterDashboard"}
+    
+counter_load_cola:
+    path:     /counter/cola/
+    defaults: { _controller: "EmisionesBundle:Counter:loadColaCounter" }
+    
+counter_exportar_pdf:
+    path:     /counter/exportar/pdf/
+    defaults: { _controller: "EmisionesBundle:Counter:makePdf"}
+    
+counter_new_exportar_pdf:
+    path:     /counter/{orden}/exportar_nonsave/pdf/
+    defaults: { _controller: "EmisionesBundle:Counter:makePdf"}
+    
+counter_render_email:
+    path:     /counter/render/email/{entity}/
+    defaults: { _controller: "EmisionesBundle:Counter:renderMail"}
+    
+counter_enviar_email:
+    path:     /counter/enviar/email
+    defaults: { _controller: "EmisionesBundle:Counter:sendMail"}
+    
+counter_render_reporte:
+    path:     /render/reporte/
+    defaults: { _controller: "EmisionesBundle:Counter:renderReporte"}
+    
+counter_make_reporte:
+    path:     /make/reporte/
+    defaults: { _controller: "EmisionesBundle:Counter:makeReporte"}
+    
+counter_emision_edit:
+    path:     /counter/emision/procesar/{id}/
+    defaults: { _controller: "EmisionesBundle:Counter:editEmision" }
+
+counter_emision_update:
+    path:     /counter/emision/update/{id}/update
+    defaults: { _controller: "EmisionesBundle:Counter:updateEmision" }
+    
+counter_emision_show:
+    path:     /counter/emision/{id}/show
+    defaults: { _controller: "EmisionesBundle:Counter:showEmision" }
+    
+counter_anulacion_edit:
+    path:     /counter/anulacion/procesar/{id}/
+    defaults: { _controller: "EmisionesBundle:Counter:editAnulacion" }
+
+counter_anulacion_update:
+    path:     /counter/anulacion/update/{id}/update
+    defaults: { _controller: "EmisionesBundle:Counter:updateAnulacion" }
+    
+counter_anulacion_show:
+    path:     /counter/anulacion/{id}/show
+    defaults: { _controller: "EmisionesBundle:Counter:showAnulacion" }
+    
+counter_revision_edit:
+    path:     /counter/revision/procesar/{id}/
+    defaults: { _controller: "EmisionesBundle:Counter:editRevision" }
+
+counter_revision_update:
+    path:     /counter/revision/update/{id}/update
+    defaults: { _controller: "EmisionesBundle:Counter:updateRevision" }
+    
+counter_revision_show:
+    path:     /counter/revision/{id}/show
+    defaults: { _controller: "EmisionesBundle:Counter:showRevision" }
+    
+counter_formas_pago:
+    path:     /{orden}/formas/pago
+    defaults: { _controller: "EmisionesBundle:Counter:indexFormasPago" }
+    
+counter_tarjetacredito_show:
+    path:     /counter/tarjetacredito/{id}/show/{orden}/
+    defaults: { _controller: "EmisionesBundle:Counter:showTarjetaCredito" }
+    
+counter_pagodirecto_show:
+    path:     /counter/pagodirecto/{id}/show/{orden}/
+    defaults: { _controller: "EmisionesBundle:Counter:showPagoDirecto" }
+    
+counter_depefectivotransferenciabancaria_show:
+    path:     /counter/depefectivotransferenciabancaria/{id}/show/{orden}/
+    defaults: { _controller: "EmisionesBundle:Counter:showDETB" }

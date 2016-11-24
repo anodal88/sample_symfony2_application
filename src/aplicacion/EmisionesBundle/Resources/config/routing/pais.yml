@@ -1,0 +1,30 @@
+pais:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Pais:index" }
+
+pais_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Pais:show" }
+
+pais_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Pais:new" }
+
+pais_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Pais:create" }
+    requirements: { _method: post }
+
+pais_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Pais:edit" }
+
+pais_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Pais:update" }
+    requirements: { _method: post|put }
+
+pais_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Pais:delete" }
+    requirements: { _method: post|delete }

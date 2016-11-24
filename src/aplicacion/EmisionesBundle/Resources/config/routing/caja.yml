@@ -1,0 +1,24 @@
+dashboard_cobranza:
+    path:     /dashboard_cobranza/
+    defaults: { _controller: "EmisionesBundle:Caja:dashboard" }
+
+operador_conciliar_manual:
+    path:     /conciliar/manual/{id}/
+    defaults: { _controller: "EmisionesBundle:Caja:conciliarManual" }
+    
+supervisor_cobranza_index_agencias:
+    path:     /agencias/
+    defaults: { _controller: "EmisionesBundle:Caja:indexAgencias" } 
+    
+supervisor_cobranza_load_agencias_ajax:
+    path:     /load/agencias/ajax
+    defaults: { _controller: "EmisionesBundle:Caja:load_ajax_agencias" }
+    
+supervisor_cobranza_member_unmember_agencia:
+    path:     /member_unmember/{id}/{id_empresa}/{referencia}/
+    defaults: { _controller: "EmisionesBundle:Caja:member_unmember", referencia: null }
+    
+operador_supervisor_cobranza_load_pie:
+    path:     /cobranza/load/pie/
+    defaults: { _controller: "EmisionesBundle:Caja:loadPie" }
+    

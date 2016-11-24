@@ -1,0 +1,46 @@
+feriado:
+    path:     /
+    defaults: { _controller: "BaseBundle:Feriado:index" }
+
+feriado_show:
+    path:     /{id}/show
+    defaults: { _controller: "BaseBundle:Feriado:show" }
+
+feriado_new:
+    path:     /new
+    defaults: { _controller: "BaseBundle:Feriado:new" }
+    
+feriado_new_ajax:
+    path:     /new/feriado
+    defaults: { _controller: "BaseBundle:Feriado:new_ajax" }
+    
+feriado_load_ajax:
+    path:     /load/feriados
+    defaults: { _controller: "BaseBundle:Feriado:load_ajax" }
+    
+feriado_update_ajax:
+    path:     /update/feriado
+    defaults: { _controller: "BaseBundle:Feriado:update_ajax" }
+    
+feriado_delete_ajax:
+    path:     /delete/feriado
+    defaults: { _controller: "BaseBundle:Feriado:delete_ajax" }
+
+feriado_create:
+    path:     /create
+    defaults: { _controller: "BaseBundle:Feriado:create" }
+    requirements: { _method: post }
+
+feriado_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BaseBundle:Feriado:edit" }
+
+feriado_update:
+    path:     /{id}/update
+    defaults: { _controller: "BaseBundle:Feriado:update" }
+    requirements: { _method: post|put }
+
+feriado_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BaseBundle:Feriado:delete" }
+    requirements: { _method: post|delete }

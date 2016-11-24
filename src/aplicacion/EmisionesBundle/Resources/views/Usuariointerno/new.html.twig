@@ -1,0 +1,108 @@
+{% extends 'baselogin.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+
+
+ <br>
+<div style="margin-top: -3px;width: 40%;" class="form-box" id="login-box">
+    <div class="header bg-blue-gradient "> <i class="fa fa-users"></i> {{ 'layout.register'|trans }}</div>
+            <form action="{{ path("usuariointerno_create") }}"  method="post" {{form_enctype(form) }}>
+               
+                <div class="body bg-gray">
+                      
+                    <div style="margin-left: 35%;" class="form-group">
+                        <img style="width: 37%; margin-left: -50%;" alt="User Image" id="userimage" class="img-responsive img-rounded" src="{{asset('bundles/base/img/user.png')}}">
+                         {{ form_widget(form.foto) }}
+                         <button style="margin-left: -10%;margin-top: -30%;" class="btn btn-xs btn-primary" type=button onclick="this.form.aplicacion_emisionesbundle_usuariointerno_foto.click()"><i class="fa fa-picture-o"></i> <span id="info" >Subir Foto</span></button>
+                           <p class="pull-right" style="margin-top: -25%;" >                        
+                             <a  href="{{path('fos_user_security_login')}}" class="text-center">
+                                <button class="btn bg-light-blue btn-circle"><i class="fa fa-user"></i></button>
+                                {{ 'layout.login'|trans }} </a>
+                          </p> 
+                         <p class="help-block">{{form_errors(form.foto)}}</p>
+                     </div>
+                    
+                    <div class="row" style="margin-top: -20px;">   
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                        <label >{{'form.email'|trans}}</label>
+                        {{ form_widget(form.email) }}
+                         <p class="help-block">{{form_errors(form.email)}}</p>
+                    </div>
+                   <div class="form-group">
+                       <label >{{'form.username'|trans}}</label>
+                        {{ form_widget(form.username) }}
+                         <p class="help-block">{{form_errors(form.username)}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label >{{'form.password'|trans}}</label>
+                        {{ form_widget(form.plainPassword) }}
+                        <p class="help-block">{{form_errors(form.plainPassword)}}</p>
+                    </div>
+                    <div class="form-group">
+                         <label >{{'registration.user.name'|trans}}</label>
+                        {{ form_widget(form.nombre) }}
+                         <p class="help-block">{{form_errors(form.nombre)}}</p>
+                    </div>
+                     <div class="form-group">
+                        <label >{{'registration.user.apellidos'|trans}}</label>
+                        {{ form_widget(form.apellidos) }}
+                         <p class="help-block">{{form_errors(form.apellidos)}}</p>
+                    </div>
+                    
+                          
+                </div>
+                 <div class="col-sm-6">  
+                     <div class="form-group">
+                         <label >{{'registration.user.ci'|trans}}</label>
+                        {{ form_widget(form.ci) }}
+                        <p class="help-block">{{form_errors(form.ci)}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label >{{'registration.user.sex'|trans}}</label>
+                        {{ form_widget(form.sexo) }}
+                         <p class="help-block">{{form_errors(form.sexo)}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label >{{'registration.user.movil'|trans}}</label>
+                        {{ form_widget(form.celular) }}
+                         <p class="help-block">{{form_errors(form.celular)}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label >{{'registration.user.phone'|trans}}</label>
+                        {{ form_widget(form.telefono) }}
+                         <p class="help-block">{{form_errors(form.telefono)}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label >{{'registration.user.ext'|trans}}</label>
+                        {{ form_widget(form.ext) }}
+                         <p class="help-block">{{form_errors(form.ext)}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label >{{'registration.user.boss'|trans}}</label>
+                        {{ form_widget(form.jefe) }}
+                         <p class="help-block">{{form_errors(form.jefe)}}</p>
+                    </div>
+                     
+                     </div>
+                      
+                </div>
+                    <div style="margin-top: -25px;" class="form-group">
+                         <label >{{'registration.user.enterprise'|trans}}</label>
+                        {{ form_widget(form.empresa) }}
+                         <p class="help-block">{{form_errors(form.empresa)}}</p>
+                    </div>
+                    <button type="submit" id="_submit" name="_submit" value="{{ 'registration.submit'|trans }}" class="btn bg-blue-gradient btn-block">{{ 'registration.submit'|trans }}</button>  
+                   
+                  {{ form_rest(form) }} 
+                
+            </form>
+
+</div> 
+        </div>
+   
+{% endblock fos_user_content %}
+
+

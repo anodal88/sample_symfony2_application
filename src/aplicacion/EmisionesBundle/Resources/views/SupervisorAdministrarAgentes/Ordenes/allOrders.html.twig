@@ -1,0 +1,292 @@
+
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            
+           
+        {% endblock %}
+        
+    {% block logo %}
+        <img src="{{asset('bundles/base/img/logos/logo1.png')}}" style="width: 20%;" alt="cross"/>
+    {% endblock%}
+        
+   {% block projectname %}
+        CrossFire
+   {% endblock %}
+        
+ {% block sidebar %} 
+       {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Supervisor</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">&Oacute;rdenes</li>
+     <li class="active">Emisiones</li>
+ {% endblock %}
+  
+ {% block area %}
+     
+     <div class="col-sm-12 "> 
+     <div class="box box-primary">
+                                <div class="box-header">                                    
+                                            <div class="box-tools pull-left">                                        
+                                                <button onclick="reloadTable();" title="" data-toggle="tooltip" data-original-title="Actualizar"  class="btn btn-sm btn-bg bg-navy btn-circle"><i class="fa fa-refresh"></i></button>                                        
+                                                <a href="#" title="" style="margin-top: -3px;font-size: 15px;" data-toggle="tooltip" data-original-title="CSV"  class="btn btn-sm btn-bg bg-olive btn-circle "><i class="icon-file-excel"></i></a>                                        
+                                                <button  onclick="builChartBar();" title="" style="margin-top: -3px;font-size: 15px;"  data-toggle="tooltip" data-original-title="G&aacute;fica Barras"  class="btn btn-sm btn-bg bg-light-blue btn-circle "><i class="icon-bars"></i></button> 
+                                                <button onclick="builChartPie();" title="" style="margin-top: -3px;font-size: 15px;" data-toggle="tooltip" data-original-title="G&aacute;fica Pastel"  class="btn btn-sm btn-bg bg-black btn-circle "><i class="icon-pie"></i></button>  
+                                                
+                                            </div>
+                                            <div class="box-tools pull-right">
+                                                <button id="emisiondaterange" class="btn btn-sm btn-primary pull-right">
+                                                        <i class="fa fa-calendar"></i> Hoy
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </button>
+                                                    
+                                                {#Seleccion de tipos #}
+                                                    <div  class="btn-group" style="margin-right: 5px;">
+                                                      <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" id="type-chooser-btn" value="Emision" type="button" ><i class="fa fa-bullhorn"></i> Emisiones <span class="caret"></span></button>
+                                                        <ul id="type-chooser" class="dropdown-menu">
+                                                            <li><a id="Emision"  href="#" class="active"><i class="fa fa-bullhorn"></i> Emisiones</a></li>
+                                                            <li><a id="Revision" href="#" class=""><i  class="fa fa-edit"></i> Revisiones</a></li>
+                                                            <li><a id="Anulacion" href="#" class=""><i  class="fa fa-ban"></i> Anulaciones</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a id="all" href="#" class=""><i  class="fa fa-list"></i> Todos los Tipos</a></li>
+                                                          
+                                                        </ul>
+                                                    </div>  
+                                                    
+                                                    {#Seleccion de estados #}
+                                                    <div  class="btn-group" style="margin-right: 5px;">
+                                                      <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" id="state-chooser-btn" value="Pendiente" type="button" ><i class="fa fa-clock-o"></i> Pendientes <span class="caret"></span></button>
+                                                        <ul id="state-chooser" class="dropdown-menu">
+                                                            <li><a id="Pendiente"  href="#" class="active"><i class="fa fa-clock-o"></i> Pendientes</a></li>
+                                                            <li><a id="Procesada" href="#" class=""><i  class="fa fa-gears"></i> Procesadas</a></li>
+                                                            <li><a id="Rechazada" href="#" class=""><i  class="fa fa-reply-all"></i> Rechazadas</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a id="all" href="#" class=""><i  class="fa fa-list"></i> Todos los Estados</a></li>
+                                                          
+                                                        </ul>
+                                                    </div> 
+
+                                            </div>
+                                        </div>
+                                <div class="box-body table-responsive" style="height: 500px">
+                                            <hr>
+                                            <table id="emisiones" class="table table-bordered table-striped"  cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th>Tiempo</th>
+                                                        <th>Agente</th>
+                                                        <th>Agencia</th>
+                                                        <th>Fecha & Hora</th>
+                                                        <th >Tipo</th>
+                                                        <th >Gds</th>
+                                                        <th>Tipo Boleto</th>                                                
+                                                        
+                                                    </tr>
+                                                </thead>
+
+
+                                            </table>
+                                        </div><!-- /.box-body -->
+     </div><!-- /.box -->
+     
+     {#Modal de los reportes#}
+     <div class="modal fade "  id="report-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog box box-solid box-primary" style="width: 80%;height: 500px;margin-top: 7%;">
+                <div class="box-header">
+                    <h2 id="window-title" class="box-title pull-right"></h2>
+                                    <div class="box-tools pull-left">
+                                        <button data-dismiss="modal" aria-hidden="true" class=" btn btn-bg bg-red-gradient btn-circle "><i class="fa fa-times"></i></button>                                        
+                                    </div>
+                </div>
+                    
+                    
+                    <div id="report-boddy" class="box-body">
+                                    
+                    </div>
+                
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+     
+     
+        </div>
+  
+         
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}
+      <script src="{{ asset('bundles/base/js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts-more.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/modules/exporting.js') }}" type="text/javascript"></script>      
+      
+      <script type="text/javascript">
+         
+               //Los tipos de ordenes
+                var typeChooser = $("#type-chooser-btn");
+                $("#type-chooser > li > a").click(function(e) {
+                    e.preventDefault();
+                    //Save color
+                    currColor = $(this).css("color");
+                    //Get a id to set of btn value
+                    currlinkId= $(this).attr("id");
+                    typeChooser
+                            .attr('value',currlinkId)
+                            //.css({"background-color": currColor, "border-color": currColor})
+                            .html($(this).html()+' <span class="caret"></span>');
+                 //Cargar los datos de la tabla cuando seleccione el filtro           
+                 reloadTable();
+                });
+                
+                //Los estados
+                var stateChooser = $("#state-chooser-btn");
+                $("#state-chooser > li > a").click(function(e) {
+                    e.preventDefault();
+                    //Save color
+                    currColor = $(this).css("color");
+                    //Get a id to set of btn value
+                    currlinkId= $(this).attr("id");
+                    stateChooser
+                            .attr('value',currlinkId)
+                            //.css({"background-color": currColor, "border-color": currColor})
+                            .html($(this).html()+' <span class="caret"></span>');
+                 //Cargar los datos de la tabla cuando seleccione el filtro           
+                 reloadTable();
+                });
+      
+      
+          
+          
+          $(document).ready(function() {
+    
+              
+                 $('#emisiondaterange').html('<i class="fa fa-calendar"></i> '+ moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                 $('#emisiondaterange').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
+                 $('#emisiondaterange').daterangepicker(
+                        {
+                           // timePicker: true,
+                           // timePickerIncrement: 5,
+                           // format: 'MM/DD/YYYY H:mm ',
+                            ranges: {
+                                'Hoy': [moment(), moment()],
+                                'Ayer': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                                'Ultimos 7 dias': [moment().subtract('days', 6), moment()],
+                                'Ultimos 30 dias': [moment().subtract('days', 29), moment()],
+                                'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+                                'Mes Anterior': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                            },
+                            startDate: moment(),
+                            endDate: moment()
+                        },
+                function(start, end) {
+                   // $('#reportrange').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    $('#emisiondaterange').html('<i class="fa fa-calendar"></i> '+ start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                    $('#emisiondaterange').val(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+                    //Cargar la tabla con los parametros seleccionados
+                    reloadTable()                  
+                }
+                );
+                loadTable();
+});
+          function loadTable(){
+              //Mostrar la mascara para preparar la carga de datos
+                    table= $('#emisiones').dataTable( 
+                                            {
+                                                bFilter: true,
+                                                bInfo: true,
+                                                "oLanguage": {
+                                                    "sEmptyTable": "No existen datos para mostrar.",
+                                                    "sSearch":'Buscar: ',
+                                                        "oPaginate": {
+                                                                "sNext": "Siguiente",
+                                                                "sPrevious": "Anterior",
+                                                                "sLast": "Fin",
+                                                                "sFirst": "inicio"
+                                                            },
+                                                        "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ elementos",
+                                                        "sInfoEmpty": "Mostrando 0 al 0 de 0 elementos",
+                                                        "sLengthMenu": "Mostrar _MENU_ elementos",
+                                                        "sLoadingRecords": "Cargando...",
+                                                        "sProcessing": "Procesando...",
+                                                        "sZeroRecords": "No se encontraron coincidencias",
+                                                        "sInfoFiltered": "(filtrado de un total de _MAX_ elementos)",
+                                                    },
+                                                bJQueryUI: true,                        
+                                                bPaginate: true,
+                                                bStateSave: false,
+                                                bSort: true,
+                                                bProcessing: true,
+                                                aoColumns: [ 
+
+                                                    {"mData" : "tiempo","sWidth":"15%"}, 
+                                                    {"mData" : "agente","sWidth":"15%"}, 
+                                                    {"mData" : "agencia","sWidth":"15%"}, 
+                                                    {"mData" : "fecha","sWidth":"15%"},                                                    
+                                                    {"mData" : "tipo","sWidth":"15%"},
+                                                    {"mData" : "gds","sWidth":"15%"},
+                                                    {"mData" : "tboleto","sWidth":"15%"}
+                                                 
+
+                                                ], 
+                                                order: [[1, 'asc']],
+                                                sAjaxSource: "{{path('supervisor_load_ordenes')}}",
+                                                sServerMethod: "POST",
+                                                "fnServerParams": function ( aoData ) 
+                                                {
+                                                    aoData.push( 
+                                                    { "name": "rangoemisiones", "value": $('#emisiondaterange').val() },
+                                                    { "name": "estado", "value": $("#state-chooser-btn").val() },
+                                                    { "name": "tipo", "value": $("#type-chooser-btn").val() }
+                                                
+                                            );
+                                                }
+                                            } );
+                                            }
+         
+         function reloadTable()
+         {
+             table.fnReloadAjax();
+         }
+         
+         function builChartBar()
+         {
+             //Setear el titulo del reporte
+             $('#window-title').html('Gr&aacute;fica de Barras');
+             //Limpiar el contenido dela window
+             $('#report-boddy').empty();
+             $('#report-modal').modal(
+                {
+                    
+                    'show':true
+                }
+                );
+         }
+         function builChartPie()
+         {
+             //Setear el nombre del ghrafico
+             $('#window-title').html('Gr&aacute;fica de Pastel');
+             //Limpiar el contenido dela window
+             $('#report-boddy').empty();
+             $('#report-modal').modal(
+                {
+                    'show':true
+                     
+                }
+                );
+         }
+         
+
+      </script>
+  {% endblock %}

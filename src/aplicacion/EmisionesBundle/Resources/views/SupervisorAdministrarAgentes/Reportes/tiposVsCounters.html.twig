@@ -1,0 +1,173 @@
+
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            
+           
+        {% endblock %}
+
+        
+ {% block sidebar %} 
+       {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Supervisor</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Solicitudes</li>
+     <li class="active">Supervisor</li>
+ {% endblock %}
+  
+ {% block area %}
+     
+     <div class="col-md-12"> 
+      <div class="row"> 
+          <div class="col-md-12"> 
+              <div id="line-container" class="box box-primary">
+                                <div class="box-header">                                   
+                                    <div class="box-tools pull-left">                                        
+                                        <button onclick="loadLine();" title="" data-toggle="tooltip" data-original-title="Actualizar"  class="btn btn-sm btn-bg bg-navy btn-circle"><i class="fa fa-refresh"></i></button>                                        
+                                    </div>
+                                    <div class="box-tools pull-right">
+                                        <button id="linedaterange" class="btn btn-sm btn-primary pull-right">
+                                                <i class="fa fa-calendar"></i> Hoy
+                                                <i class="fa fa-caret-down"></i>
+                                            </button>
+                                       
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div id="line" style="height: 500px; margin: 0 auto"></div>
+                                </div><!-- /.box-body -->
+                            </div>
+          
+          </div>
+      </div>
+   </div>
+         
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}
+      <script src="{{ asset('bundles/base/js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/highcharts-more.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/highcharts/modules/exporting.js') }}" type="text/javascript"></script>      
+      
+      <script type="text/javascript">
+          
+          
+          
+          $(document).ready(function(){
+          //Poner mas bonitos los colores
+          // Radialize the colors Pintar el grafico
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+         //Funcion para actualizar la grafica cada 1 min
+          window.setInterval(function()
+                { 
+                   //Refrescar informacion cada 1 minuto
+                    loadLine();
+                }, 60000);
+
+              //Seteando el texto del boton y el valor para posteriormente ejecutar la funcion ajax y cargar datos
+              //Boton de rango del line
+                 $('#linedaterange').html('<i class="fa fa-calendar"></i> '+ moment().hours(0).minutes(0).seconds(0).format('H:mm MMMM D, YYYY') + ' - ' + moment().hours(23).minutes(59).seconds(0).format('H:mm MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                 $('#linedaterange').val(moment().hours(0).minutes(0).seconds(0).format('MM/DD/YYYY H:mm') + ' - ' + moment().hours(23).minutes(59).seconds(0).format('MM/DD/YYYY H:mm'));
+                 $('#linedaterange').daterangepicker(
+                        {
+                            timePicker: true,
+                            timePickerIncrement: 5,
+                            timePicker12Hour:false,
+                            format: 'MM/DD/YYYY H:mm',
+                            ranges: {
+                                'Hoy': [moment().hours(0).minutes(0).seconds(0), moment().hours(23).minutes(59).seconds(0)],
+                                'Ayer': [moment().subtract('days', 1).hours(0).minutes(0).seconds(0), moment().subtract('days', 1).hours(23).minutes(59).seconds(0)],
+                                'Ultimos 7 dias': [moment().subtract('days', 6).hours(0).minutes(0).seconds(0), moment().hours(23).minutes(59).seconds(0)],
+                                'Ultimos 30 dias': [moment().subtract('days', 29).hours(0).minutes(0).seconds(0), moment().hours(23).minutes(59).seconds(0)],
+                                'Este Mes': [moment().startOf('month').hours(0).minutes(0).seconds(0), moment().endOf('month').hours(23).minutes(59).seconds(0)],
+                                'Mes Anterior': [moment().subtract('month', 1).startOf('month').hours(0).minutes(0).seconds(0), moment().subtract('month', 1).endOf('month').hours(23).minutes(59).seconds(0)]
+                            },
+                            startDate: moment(),
+                            endDate: moment()
+                        },
+                function(start, end) {                   
+                    $('#linedaterange').html('<i class="fa fa-calendar"></i> '+ start.format('H:mm MMMM D, YYYY') + ' - ' + end.format('H:mm MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                    $('#linedaterange').val(start.format('MM/DD/YYYY H:mm') + ' - ' + end.format('MM/DD/YYYY H:mm'));
+                    //Cargar la grafica para las fechas seleccionada                   
+                    loadLine()
+                }
+                );
+             //Cargar los datos de los reportes
+               loadLine()
+            });
+         function loadLine()
+                {
+                 //Mostrar la mascara para preparar la carga de datos
+                   $('#line-container').append('<div id="linemask" class="overlay"></div>');
+                   $('#line-container').append('<div id="lineloader" class="loading-img"></div>');
+                      $.ajax({
+                            url: '{{path('supervisor_load_line')}}',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                rangoline: $('#linedaterange').val()                                
+                                {#empresa_id:{{app.user.empresa.id}}#}
+                            },                          
+                            success: function(result) {                                     
+                                $('#line').highcharts({
+                                        title: {
+                                            text: 'Tipos de Solicitudes Vs Counters',
+                                            x: -20 //center
+                                        },
+
+                                        xAxis: {
+                                            categories: result['categories']
+                                        },
+                                        yAxis: {
+                                            min: 0,
+                                            tickInterval: null,
+                                            title: {
+                                                text: 'Solicitudes'
+                                            },
+                                            plotLines: [{                                               
+                                                value: 0,
+                                                width: 1,
+                                                color: '#808080'
+                                            }]
+                                        },
+                                        tooltip: {
+                                            valueSuffix: ' '//Sufijo despues de los valores
+                                        },
+                                        legend: {
+                                            layout: 'vertical',
+                                            align: 'right',
+                                            verticalAlign: 'middle',
+                                            borderWidth: 0
+                                        },
+                                        series: result['datos']
+                                    });
+                                  
+                              //Quitar la mascara para que se ve ael reporte
+                                $('#linemask').remove();
+                                $('#lineloader').remove();
+                            }
+                            });
+                }
+      </script>
+  {% endblock %}

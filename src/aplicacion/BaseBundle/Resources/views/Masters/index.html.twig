@@ -1,0 +1,111 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+ {% block sidebar %} 
+
+     
+                        {% if  'ROLE_AGENTE_EXTERNO' in  app.user.roles %}
+                            {% include 'EmisionesBundle:Menu:agente.html.twig' %}
+                        {%elseif 'ROLE_CAJA' in  app.user.roles%}
+                            {% include 'EmisionesBundle:Menu:caja.html.twig' %}
+                        {%elseif 'ROLE_SUPERVISOR_COBRANZA' in  app.user.roles%}
+                            {% include 'EmisionesBundle:Menu:supervisorcobranza.html.twig' %}
+                        {%else%}
+                            <li class="active">
+                            <a href="">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('EmisionesBundle_queue_manger')}}">
+                                <i class="fa fa-plane"></i> <span>Emisiones</span> 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://200.90.157.236/hotelintegrator/index.php?r=site/login">
+                                <i class="fa fa-globe"></i> <span>SVI</span> 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://mym2013.sysaidit.com/">
+                                <i class="fa fa-wrench"></i> <span>Sysaid</span> 
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="http://mym2013.sysaidit.com/">
+                                <i class="fa fa-users"></i> <span>Reservar Sal&oacute;n</span> 
+                            </a>
+                        </li>
+                        
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-sitemap"></i> <span>Organigrama</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="treeview">
+                                    <a href="#">
+                                        <i class="fa fa-sitemap"></i> <span>M&M</span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="pages/examples/invoice.html"><i class="fa fa-bookmark"></i>Areas</a></li>
+                                        <li><a href="{{path('organigrama',{'empresa':1,'tipo':'empleado'})}}"><i class="fa fa-user"></i> Empleados</a></li>
+                                        
+                                    </ul>
+                                </li> 
+                                <li><a href="pages/examples/invoice.html"><i class="fa fa-archive"></i> M&M</a></li>
+                                <li><a href="pages/examples/login.html"><i class="fa fa-archive"></i> Lujor</a></li>
+                                <li><a href="pages/examples/login.html"><i class="fa fa-archive"></i> HRG</a></li>
+                            </ul>
+                        </li> 
+                        <li>
+                            <a href="pages/widgets.html">
+                                <i class="fa fa-phone-square"></i> <span>Directorio</span> 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="pages/widgets.html">
+                                <i class="fa fa-film"></i> <span>Videoteca</span> 
+                            </a>
+                        </li>
+                        
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-pencil-square-o"></i> <span>Solicitudes</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href=""><i class="fa fa-calendar"></i> Vacaciones</a></li>
+                                <li><a href=""><i class="fa fa-cutlery"></i> Vi&aacute;ticos</a></li>                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {# 
+                         <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-shield"></i> <span>Seguridad</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="{{path('fos_user_change_password')}}"><i class="fa fa-unlock-alt"></i> Cambiar Contrase&ntilde;a</a></li>
+                                <li><a href="{{path('fos_user_profile_edit')}}"><i class="fa fa-user"></i> Editar Perfil</a></li>
+                            </ul>
+                        </li>#}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Control panel</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Dashboard</li>
+ {% endblock %}
+  
+ {% block area %}
+      
+  {% endblock %}

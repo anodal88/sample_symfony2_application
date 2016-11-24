@@ -1,0 +1,34 @@
+agente:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Agente:index" }
+
+agente_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Agente:show" }
+
+agente_new:
+    path:     /new/agente/agencia/68as6da4s6d4AjhjC45687f55gb2f1g8sd78sdf
+    defaults: { _controller: "EmisionesBundle:Agente:new" }
+
+agente_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Agente:register" }
+    
+
+agente_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Agente:edit" }
+
+agente_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Agente:update" }
+    requirements: { _method: post|put }
+
+agente_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Agente:delete" }
+    requirements: { _method: post|delete }
+
+agente_vista_agente:
+    path:     /pantalla/agente/    
+    defaults: { _controller: "EmisionesBundle:Agente:vistaAgente" }

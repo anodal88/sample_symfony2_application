@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Orden</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Tipoboleto</th>
+                <td>{{ entity.tipoBoleto }}</td>
+            </tr>
+            <tr>
+                <th>Recordgds</th>
+                <td>{{ entity.recordGds }}</td>
+            </tr>
+            <tr>
+                <th>Tourcode</th>
+                <td>{{ entity.tourcode }}</td>
+            </tr>
+            <tr>
+                <th>Feeservicios</th>
+                <td>{{ entity.feeServicios }}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ entity.observaciones }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('orden') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('orden_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

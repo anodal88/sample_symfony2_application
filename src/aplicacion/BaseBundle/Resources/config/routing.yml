@@ -1,0 +1,27 @@
+index:
+    pattern: /
+    defaults: { _controller: BaseBundle:Aplicacion:index }
+  
+lock_screen:
+    pattern: /lock/screen/
+    defaults: { _controller: BaseBundle:Aplicacion:lockScreen }
+    
+organigrama:
+    pattern: /{empresa}/{tipo}/organigrama/
+    defaults: { _controller: BaseBundle:Aplicacion:organigrama }
+    
+BaseBundle_user:
+        resource: "@BaseBundle/Resources/config/routing/user.yml"
+        prefix:   /user
+        
+BaseBundle_empresa:
+        resource: "@BaseBundle/Resources/config/routing/empresa.yml"
+        prefix:   /empresa
+        
+BaseBundle_feriado:
+        resource: "@BaseBundle/Resources/config/routing/feriado.yml"
+        prefix:   /supervisor/feriado
+        
+BaseBundle_configuracion:
+        resource: "@BaseBundle/Resources/config/routing/configuracion.yml"
+        prefix:   /supervisor/configuracion

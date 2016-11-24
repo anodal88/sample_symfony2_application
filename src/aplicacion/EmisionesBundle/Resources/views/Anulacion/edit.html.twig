@@ -1,0 +1,242 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+{% block sidebar %} 
+                        <li class="">
+                            <a href="{{path('ordenes')}}">
+                                <i class="fa fa-align-justify"></i> <span>Ordenes Pendientes</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{{path('emision_edit',{'id':entity.id})}}">
+                                <i class="fa fa-cog"></i> <span>Procesar Orden</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{path('render_email',{'entity':entity.id})}}">
+                                <i class="fa fa-envelope"></i> <span>Enviar Email Agente</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{path('formapago',{'orden':entity.id})}}" >
+                                <i class="fa  fa-credit-card"></i> <span>Formas Pago</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#" id="pdf">
+                                <i class="fa fa-download"></i> <span>PDF</span>
+                            </a>
+                        </li>
+                        {#Ventana de Enviar Mail#}
+    
+    
+   
+                                              
+ {% endblock %}
+ 
+  {% block logo %}
+        <img src="{{asset('bundles/base/img/logos/logo1.png')}}" style="width: 20%;" alt="cross"/>
+    {% endblock%}
+        
+   {% block projectname %}
+        CrossFire
+   {% endblock %}
+   
+ {%block titlepage %}
+     <h1>
+        Ordenes
+        <small>Procesar</small>
+    </h1>
+ {%endblock%}
+ 
+ {% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li <a href="{{path('ordenes')}}"><i class="fa fa-align-justify"></i> Ordenes</a></li>
+     <li class="active">Procesar</li>
+ {% endblock %}
+
+{% block area -%}
+    
+    <div class="col-md-12">
+
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-suitcase"></i> {{entity.agente.agencia}}</h3>
+                                </div>
+                 <form  action="{{path('anulacion_update',{'id':entity.id})}}" method="post">
+                                <div class="box-body">
+                                   <div class="row">  
+                                <div class="col-md-6">    
+                                    
+                                    <!-- Date dd/mm/yyyy -->
+                                    <div class="form-group">
+                                        <label>Agente:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div> 
+                                
+                                            {{form_widget(edit_form.agente)}}
+                                            {{form_errors(edit_form.agente)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    <div class="form-group">
+                                        <label>Gds:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-cogs"></i>
+                                            </div>                                                                
+                                            {{ form_widget(edit_form.gds)}}
+                                            {{form_errors(edit_form.gds)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+
+                                    <!-- Date mm/dd/yyyy -->
+                                    <div class="form-group">
+                                         <label>Tipo Boleto:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-file-o"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.tipoBoleto)}}
+                                            {{form_errors(edit_form.tipoBoleto)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                      <!-- Date mm/dd/yyyy -->
+                                    <div class="form-group">
+                                         <label>Fecha Solicitud:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.fecha)}}
+                                            {{form_errors(edit_form.fecha)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                    <div class="form-group">
+                                         <label>Estado:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-tag"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.estado)}}
+                                            {{form_errors(edit_form.estado)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                     <div class="form-group">
+                                         <label>Record GDS:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-barcode"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.recordGds)}}
+                                            {{form_errors(edit_form.recordGds)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                     <div class="form-group">
+                                         <label>Tour Code:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-barcode"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.tourcode)}}
+                                            {{form_errors(edit_form.tourcode)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                 
+                                    
+                                    
+                                    
+
+                                </div>
+                                    
+                                 <div class="col-md-6">  
+                                     <div class="form-group" >
+                                         <label>Orden a Anular:</label>
+                                        <div class="input-group" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-file-o"></i>
+                                            </div>
+                                            
+                                            {{ form_widget(edit_form.tarjet)}}
+                                                
+                                            {{form_errors(edit_form.tarjet)}}
+                                                
+                                        </div><!-- /.input group -->
+                                    </div>
+                                     <div class="form-group">
+                                        <label>FEE Servicios:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                           {{ form_widget(edit_form.feeServicios)}}
+                                            {{form_errors(edit_form.feeServicios)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                     <div class="form-group">
+                                        <label>Datos Boleto:</label>
+                                        <div class="input-group">
+                                            
+                                            {{ form_widget(edit_form.datosBoleto)}}
+                                            {{form_errors(edit_form.datosBoleto)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                    
+                                     <div class="form-group">
+                                        <label>VTC:</label>
+                                        <div class="input-group">
+                                            
+                                            {{ form_widget(edit_form.vtc)}}
+                                            {{form_errors(edit_form.vtc)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                     <div class="form-group">
+                                        <label>Comentarios M&M:</label>
+                                        <div class="input-group">
+                                            
+                                            {{ form_widget(edit_form.comentario)}}
+                                            {{form_errors(edit_form.comentario)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                     
+                                    <div class="form-group">
+                                        <label>Observaciones:</label>
+                                        <div class="input-group">
+                                            
+                                            {{ form_widget(edit_form.observaciones)}}
+                                            {{form_errors(edit_form.observaciones)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                 </div>
+                                   </div> 
+
+                                </div><!-- /.box-body -->
+                                <div class="box-footer">
+                                    {{ form_rest(edit_form) }}
+                                    {{ form_errors(edit_form) }}
+                                    <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Procesar </button> 
+                                </div>
+                             </form>
+                            </div><!-- /.box -->
+
+                            
+
+                        </div>
+    
+    
+    
+{% endblock %}
+ {% block javascripts %}
+      {{parent()}}
+      {% include 'EmisionesBundle:Snippets:exportarpdf.html.twig' %}
+  {% endblock %}
+  
+
+  

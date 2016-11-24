@@ -1,0 +1,30 @@
+aerolinea:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Aerolinea:index" }
+
+aerolinea_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Aerolinea:show" }
+
+aerolinea_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Aerolinea:new" }
+
+aerolinea_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Aerolinea:create" }
+    requirements: { _method: post }
+
+aerolinea_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Aerolinea:edit" }
+
+aerolinea_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Aerolinea:update" }
+    requirements: { _method: post|put }
+
+aerolinea_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Aerolinea:delete" }
+    requirements: { _method: post|delete }

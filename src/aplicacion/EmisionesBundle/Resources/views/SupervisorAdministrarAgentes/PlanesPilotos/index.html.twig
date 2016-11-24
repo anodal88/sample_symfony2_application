@@ -1,0 +1,114 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+        
+   
+{% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Configuraciones</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Configuraciones</li>
+     <li class="active">Planes Pilotos</li>
+ {% endblock %}
+     
+ {% block area %}
+     <div class="col-sm-12 ">
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-right box-tools pull-left">
+                                        
+                                        <a href=""  title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-navy btn-circle" data-original-title="Actualizar"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Todos los Contratos</h3>
+                                </div><!-- /.box-header -->
+                                <hr>
+                                <div class="box-body table-responsive"> 
+                                    <table id="planespilotos"   class="table table-bordered table-striped" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-black" style="text-align: center;">Planes Pilotos</th>
+                                                {%for a in aerolineas%}
+                                                    <th class="text-blue" style="text-align: center;">{{a.nombre}}</th>
+                                                {%endfor%}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            {%for agencia in agencias%}
+                                               <tr>     
+                                                    <th class="text-green" style="text-align: center;">{{agencia.nombre}}</th>
+                                                    {%for item in aerolineas%}
+                                                        {%if agencia in item.getAgenciasPlanPiloto%}
+                                                        <td class="text-center"><a class="text-orange "  href="{{path('supervisor_activar_desactivar_plan_piloto',{'agencia':agencia.id,'aerolinea':item.id})}}"><i class="fa fa-star"></i></a></td>
+                                                        {%else%}
+                                                            <td class="text-center"><a class="text-blue"  href="{{path('supervisor_activar_desactivar_plan_piloto',{'agencia':agencia.id,'aerolinea':item.id})}}"><i class="fa fa-star-o"></i></a></td>
+                                                        {%endif%}
+                                                        
+                                                    {%endfor%}
+                                               </tr>
+                                            {%endfor%}
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+
+{% block javascripts %}
+      {{parent()}}
+      <script src="{{ asset('bundles/base/js/plugins/datatables/1.10.4/jquery.dataTables.js') }}" type="text/javascript"></script>
+       <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+           <script type="text/javascript">
+       
+                    
+                    $(document).ready(function() {
+                        
+                  
+                     table =  $('#planespilotos').DataTable( 
+                           {
+                            bFilter: true,
+                            bInfo: true,
+                            "oLanguage": {
+			           "sEmptyTable": "No existen datos para mostrar.",
+                                   "sSearch":'Buscar: ',
+                                    "oPaginate": {
+				             "sNext": "Siguiente",
+                                             "sPrevious": "Anterior",
+                                             "sLast": "Fin",
+                                             "sFirst": "inicio"
+				           },
+                                    "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ elementos",
+                                    "sInfoEmpty": "Mostrando 0 al 0 de 0 elementos",
+                                    "sLengthMenu": "Mostrar _MENU_ elementos",
+                                    "sLoadingRecords": "Cargando...",
+                                    "sProcessing": "Procesando...",
+                                    "sZeroRecords": "No se encontraron coincidencias",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ elementos)",
+			         },
+                           // bJQueryUI: true,                        
+                            bPaginate: true,
+                            //bStateSave: false,
+                           // bSort: true,
+                          
+                        } );
+                       
+          
+                    } );
+                   
+        
+         
+        </script>
+  {% endblock %}

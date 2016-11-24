@@ -1,0 +1,242 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+{% block sidebar %} 
+  {% include 'EmisionesBundle:Menu:submenucounter.html.twig' %}                         
+ {% endblock %}
+ 
+ 
+   
+ {%block titlepage %}
+     <h1>
+        Ordenes
+        <small>Procesar</small>
+    </h1>
+ {%endblock%}
+
+ {% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li> <a href="{{path('EmisionesBundle_queue_manger')}}"><i class="fa fa-align-justify"></i> Ordenes</a></li>
+     <li class="active">Procesar</li>
+ {% endblock %}
+     
+
+{% block area -%}
+    
+    <div class="col-md-12">
+
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-right box-tools pull-left">                                        
+                                        <a href="{{path('EmisionesBundle_queue_manger')}}" title="" data-toggle="tooltip"  class="btn btn-circle btn-sm btn-bg bg-blue" data-original-title="Cola"><i class="fa fa-sort-numeric-asc"></i></a>
+                                    </div>
+                                        <h3 class="box-title pull-right"><i class="fa fa-suitcase"></i> {{entity.agente.agencia}}&nbsp;&nbsp;&nbsp;{{entity.agente.agencia.ruc}}</h3>
+                                </div><hr>
+                 <form  action="{{path('counter_anulacion_update',{'id':entity.id})}}" method="post">
+                                <div class="box-body">
+                                    {%if entity.adjunto%}
+                                        <div class="col-md-12">
+                                            <a onclick="openAdjunto('{{entity.adjunto}}');" href="#"><i class="fa fa-clipboard"></i> {{entity.adjunto}}</a>
+                                            <br><br>
+                                        </div> 
+                                    {%endif%}
+                                   <div class="row">  
+                                <div class="col-md-6">    
+                                    <div class="form-group" >
+                                         <label>N&uacute;mero de Orden:</label>
+                                        <div class="input-group" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-file-o"></i>
+                                            </div>                                            
+                                            {{ form_widget(edit_form.numeroOrden)}}
+                                        </div><!-- /.input group -->
+                                        {{form_errors(edit_form.numeroOrden)}}
+                                    </div>
+                                    <!-- Date dd/mm/yyyy -->
+                                    <div class="form-group">
+                                        <label>Agente:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div> 
+                                            {{form_widget(edit_form.agente)}}
+                                                <div id="wrap"> </div>
+                                        </div><!-- /.input group -->
+                                        <div>
+                                            <span class=""><i class="fa fa-envelope"></i> {{entity.agente.email}}</span>
+                                            <span class="" style="margin-left: 20px;"> <i class="fa fa-mobile"></i> {{entity.agente.celular}}</span>
+                                            <span class="" style="margin-left: 20px;"> <i class="fa fa-phone-square"></i> {{entity.agente.telefono}}-Ext:{{entity.agente.ext}}</span>
+                                       </div>
+                                        {{form_errors(edit_form.agente)}}
+                                    </div><!-- /.form group -->
+                                    <div class="form-group">
+                                        <label>Gds:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-cogs"></i>
+                                            </div>                                                                
+                                            {{ form_widget(edit_form.gds)}}
+                                                <div id="wrap"> </div>
+                                            {{form_errors(edit_form.gds)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+
+                                    <!-- Date mm/dd/yyyy -->
+                                    <div class="form-group">
+                                         <label>Tipo Boleto:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-file-o"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.tipoBoleto)}}
+                                                <div id="wrap"> </div>
+                                            {{form_errors(edit_form.tipoBoleto)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                      <!-- Date mm/dd/yyyy -->
+                                    <div class="form-group">
+                                         <label>Fecha Solicitud:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.fecha)}}
+                                                <div id="wrap"> </div>
+                                            {{form_errors(edit_form.fecha)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                    <div class="form-group">
+                                         <label>Estado:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-tag"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.estado)}}
+                                            {{form_errors(edit_form.estado)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                    <div class="form-group">
+                                        <label>FEE Servicios:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </div>
+                                           {{ form_widget(edit_form.feeServicios)}}                                            
+                                        </div><!-- /.input group -->
+                                        {{form_errors(edit_form.feeServicios)}}
+                                    </div><!-- /.form group -->
+                                    
+                                     <div class="form-group">
+                                         <label>Record GDS:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-barcode"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.recordGds)}}
+                                        </div><!-- /.input group -->
+                                         {{form_errors(edit_form.recordGds)}}
+                                    </div><!-- /.form group -->
+                                    
+                                     <div class="form-group">
+                                         <label>Tour Code:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-barcode"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.tourcode)}}
+                                        </div><!-- /.input group -->
+                                        {{form_errors(edit_form.tourcode)}}
+                                    </div><!-- /.form group -->
+                                   <div class="form-group" >
+                                         <label>Orden x Anular:</label>
+                                        <div class="input-group" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-file-o"></i>
+                                            </div>                                            
+                                            {{ form_widget(edit_form.tarjet)}}
+                                        </div><!-- /.input group -->
+                                        {{form_errors(edit_form.tarjet)}}
+                                    </div> 
+                                    
+                                    
+                                    
+
+                                </div>
+                                    
+                                 <div class="col-md-6"> 
+                                     <div class="form-group">
+                                         <label>Ciudad Destino:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-map-marker"></i>
+                                            </div>
+                                            {{ form_widget(edit_form.ciudadDestino)}}
+                                                 <div id="wrap"> </div>
+                                        </div><!-- /.input group -->
+                                        
+                                        {{form_errors(edit_form.ciudadDestino)}}
+                                    </div><!-- /.form group -->
+                                     <div class="form-group">
+                                        <label>Datos Boleto:</label>
+                                        <div class="input-group">
+                                            
+                                            {{ form_widget(edit_form.datosBoleto)}}
+                                            {{form_errors(edit_form.datosBoleto)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                    
+                                     <div class="form-group">
+                                        <label>VTC:</label>
+                                        <div class="input-group">
+                                            
+                                            {{ form_widget(edit_form.vtc)}}
+                                            {{form_errors(edit_form.vtc)}}
+                                        </div><!-- /.input group -->
+                                    </div><!-- /.form group -->
+                                    
+                                    <div class="form-group">
+                                        <label>Observaciones:</label>                                       
+                                            {{ form_widget(edit_form.observaciones)}}
+                                            {{form_errors(edit_form.observaciones)}}                                       
+                                    </div><!-- /.form group -->                                    
+                                    
+                                 </div>
+                                   </div> 
+                                       
+                                    <div class="form-group">
+                                        <label>Comentarios M&M:</label>                                        
+                                            {{ form_widget(edit_form.comentario)}}
+                                            {{form_errors(edit_form.comentario)}}
+                                       
+                                    </div><!-- /.form group -->
+                                </div><!-- /.box-body -->
+                                <div class="box-footer">
+                                    {{ form_rest(edit_form) }}
+                                    {{ form_errors(edit_form) }}
+                                    <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> &nbsp;CONFIRMAR </button> 
+                                </div>
+                             </form>
+                            </div><!-- /.box -->
+
+                            
+
+                        </div>
+    
+    
+    
+{% endblock %}
+  {% block javascripts %}
+      {{parent()}}
+     <script type="text/javascript">
+      function openAdjunto(adjunto)
+        {
+           window.open(String(adjunto)); 
+        }
+     </script>
+  {% endblock %}
+  
+
+  

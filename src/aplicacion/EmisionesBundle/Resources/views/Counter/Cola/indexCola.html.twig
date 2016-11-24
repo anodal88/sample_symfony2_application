@@ -1,0 +1,449 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+ {% endblock %}
+        
+
+{% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:counter.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Cola Solicitudes</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Emisiones</li>
+     <li class="active">Cola de Solicitudes</li>
+ {% endblock %}
+     
+ {% block area %}
+     <div class="col-sm-12 ">
+         <div id="cola-interface" class="box box-primary" >
+                                <div class="box-header">
+                                    <div class="pull-right box-tools pull-left">
+                                        
+                                        <a href="#" onclick="table.ajax.reload();" title="" data-toggle="tooltip"  class="btn btn-circle btn-sm btn-bg bg-navy" data-original-title="Actualizar"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                    <div class="box-tools pull-right">
+                                        <button id="ordenesdaterange" class=" btn btn-sm btn-primary pull-right">
+                                                        <i class="fa fa-calendar"></i> Hoy
+                                                        <i class="fa fa-caret-down"></i>
+                                               </button>
+                                                    
+                                                {#Seleccion de tipos #}
+                                                    <div  class="btn-group" style="margin-right: 5px;">
+                                                      <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" id="type-chooser-btn" value="all" type="button" ><i class="fa fa-list"></i> Todos los Tipos <span class="caret"></span></button>
+                                                        <ul id="type-chooser" class="dropdown-menu">
+                                                            <li><a id="Emision"  href="#" class="active"><i class="fa fa-bullhorn"></i> Emisiones</a></li>
+                                                            <li><a id="Revision" href="#" class=""><i  class="fa fa-edit"></i> Revisiones</a></li>
+                                                            <li><a id="Anulacion" href="#" class=""><i  class="fa fa-ban"></i> Anulaciones</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a id="all" href="#" class=""><i  class="fa fa-list"></i> Todos los Tipos</a></li>
+                                                          
+                                                        </ul>
+                                                    </div>  
+                                                    
+                                                    {#Seleccion de estados #}
+                                                    <div  class="btn-group" style="margin-right: 5px;">
+                                                      <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" id="state-chooser-btn" value="Pendiente" type="button" ><i class="fa fa-clock-o"></i> Pendientes <span class="caret"></span></button>
+                                                        <ul id="state-chooser" class="dropdown-menu">
+                                                            {%for item in estados%}
+                                                            <li><a id="{{item.nombre}}"  href="#" class="active"><i class="{{item.icono}}"></i> {{item.nombre}}s</a></li>
+                                                            
+                                                            {%else%}
+                                                                <li><a id="-1" href="#" class=""><i  class="fa fa-list"></i> No existen estados</a></li>
+                                                            {%endfor%}
+                                                            <li class="divider"></li>
+                                                            <li><a id="all" href="#" class=""><i  class="fa fa-list"></i> Todos los Estados</a></li>
+                                                        </ul>
+                                                    </div> 
+                                            
+                                            </div>
+                                        
+                                </div><!-- /.box-header -->
+                                <hr>
+                                <span style="margin-left: 7%;" class="text-green"><i style="font-size: 18px;" class="ion ion-ios7-alarm"></i> {{configuracionactiva.tiempoPrimeraAlerta/60}} (min) para Tiempo L&iacute;mite</span>
+                                <span style="margin-left: 10%;" class="text-orange"><i style="font-size: 18px;" class="ion ion-ios7-alarm"></i> {{configuracionactiva.tiempoSegundaAlerta/60}} (min) para Tiempo L&iacute;mite</span>
+                                <span style="margin-left:10%;color:red;  "  ><i style="font-size: 18px;" class="ion ion-ios7-alarm"></i> En Tiempo L&iacute;mite</span>
+                                <span style="margin-left: 10%;" class="text-black"><i style="font-size: 18px;" class="ion ion-ios7-alarm"></i> Incumpliendo SLA</span>
+                                <hr>
+                                <div class="box-body table-responsive">
+ 
+                                    <table id="cola"   class="table table-condensed table-bordered table-striped" cellspacing="0" width="100%">
+                                        <thead class="text-blue">
+                                            <tr >
+                                                
+                                                <th></th>
+                                                <th style="text-align: center;"># Orden</th>
+                                                <th style="text-align: center;">Prioridad</th>
+                                                <th style="text-align: center;">Alerta</th>
+                                                <th style="text-align: center;">Agente</th>
+                                                <th style="text-align: center;">Agencia</th>
+                                                <th style="text-align: center;">Estado</th>
+                                                <th style="text-align: center;">Hora</th>
+                                                <th style="text-align: center;">Tipo</th>
+                                                <th style="text-align: center;">Acciones</th>
+                                                  
+                                               
+                                            </tr>
+                                        </thead>
+
+                                      
+                                    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+
+{% block javascripts %}
+      {{parent()}}
+     
+      <script src="{{ asset('bundles/base/js/plugins/datatables/1.10.4/jquery.dataTables.js') }}" type="text/javascript"></script>
+       <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+       
+     
+           <script type="text/javascript">
+               
+               //Los tipos de ordenes
+                var typeChooser = $("#type-chooser-btn");
+                $("#type-chooser > li > a").click(function(e) {
+                    e.preventDefault();
+                    //Save color
+                    currColor = $(this).css("color");
+                    //Get a id to set of btn value
+                    currlinkId= $(this).attr("id");
+                    typeChooser
+                            .attr('value',currlinkId)
+                            //.css({"background-color": currColor, "border-color": currColor})
+                            .html($(this).html()+' <span class="caret"></span>');
+                 //Cargar los datos de la tabla cuando seleccione el filtro           
+                 table.ajax.reload();
+                });
+                
+                //Los estados
+                var stateChooser = $("#state-chooser-btn");
+                $("#state-chooser > li > a").click(function(e) {
+                    e.preventDefault();
+                    //Save color
+                    currColor = $(this).css("color");
+                    //Get a id to set of btn value
+                    currlinkId= $(this).attr("id");
+                    stateChooser
+                             // .val(currlinkId)
+                            .attr('value',currlinkId)
+                            //.css({"background-color": currColor, "border-color": currColor})
+                            .html($(this).html()+' <span class="caret"></span>');
+                 //Cargar los datos de la tabla cuando seleccione el filtro           
+                 table.ajax.reload();
+                });
+                
+ function openAdjunto(adjunto)
+        {
+           window.open("http://kobra.mymtravel.com"+ String(adjunto)); 
+        }
+               
+   /* Formatting function for row details - modify as you need */
+    function format ( d ) {
+        // `d` is the original data object for the row
+                //averiguar si tiene foto el agente
+                var imgagente=" ";
+                var imgagencia=" ";
+               
+                if(d.logoagencia!= null)
+                    {
+                       imgagencia= "{{asset('uploads/agencias/')}}"+d.logoagencia;
+                    }
+                    else
+                    {
+                      imgagencia= "{{asset('uploads/agencias/')}}"+'No-Logo.gif';
+                    }
+                    
+                 if(d.avataragente!= null || d.avataragente!= '')
+                    {
+                       imgagente= "{{asset('uploads/usuarios/')}}"+d.avataragente;
+                    }
+                    else
+                    {
+                      imgagente= "{{asset('bundles/base/img/')}}"+'no-avatar.png';
+                    }
+    
+    return    '<ul class="timeline">'
+                                +'<!-- timeline time label -->'
+                                +'<li class="time-label">'
+                                 +   '<span class="bg-blue-gradient"><i class="fa fa-calendar"></i>&nbsp;&nbsp;'
+                                        +d.fecha
+                                +    '</span>'
+                               +' </li>'
+                                +'<!-- /.timeline-label -->'
+                                +'<!-- timeline item -->'
+                                +'<li>'
+                                   + '<i class="fa fa-user bg-blue"></i>'
+                                  +  '<div class="timeline-item">'
+                                    +'<span class="time label bg-red "><i class="fa fa-clock-o"></i>&nbsp;'+ d.timetoproccess+'</span>'                              
+                                           + '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
+                                            +    '<tr>'
+                                                +    '<td style="width:.4%;"><img style="width:65px;height:65px;" class="margin" alt="'+d.agente+'" src='+imgagente
+                                                    +'></td>'
+                                                +    '<td style="width:40%;">'+'<p class="text-blue"><a class="text-blue" href="#">'+d.agente+'</a></p>'
+                                                           +'<p class="text-blue"><i class="fa fa-envelope"></i> '+d.emailagente+'</p>'
+                                                         
+                                                   +'</td>'
+                                                +    '<td >'
+                                                         +'<p class="text-blue"><i class="fa  fa-mobile"></i> '+d.movil+'</p>'
+                                                        +'<p class="text-blue"><i class="fa  fa-phone-square"></i> '+d.telefono+'</p>'
+                                                        +'</td>'
+                                               + '</tr>'
+                                               + '</table>'
+                              +      '</div>'
+                             +   '</li>'
+                         
+                         
+                          +'<li>'
+                                   + '<i class="fa fa-briefcase bg-green"></i>'
+                                  +  '<div class="timeline-item">'
+                                    +'<span class="time" style="visibility:hidden;"><i class="fa fa-clock-o"></i>'+ d.timetoproccess+'</span>'                              
+                                           + '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
+                                            +    '<tr>'
+                                                +    '<td style="width:.4%;"><img style="width:65px;height:65px;" class="margin" alt="'+d.agencia+'" src='+imgagencia
+                                                    +'></td>'
+                                                +    '<td style="width:40%;">'+'<p class="text-green"><a class="text-green" href="#">'+d.agencia+'</a></p>'
+                                                           +'<p class="text-green"><i class="fa fa-envelope"></i> '+d.emailagencia+'</p>'
+                                                         
+                                                   +'</td>'
+                                                +    '<td >'
+                                                         +'<p class="text-green"><i class="fa fa-phone-square"></i> '+d.telefonoagencia+'</p>'
+                                                        +'<p class="text-green"><i class="fa fa-map-marker"></i> '+d.direccionagencia+'</p>'
+                                                        +'</td>'
+                                               + '</tr>'
+                                               + '</table>'
+                              +      '</div>'
+                             +   '</li>'
+                             +   '<li>'
+                                    +'<i class="fa fa-comments bg-orange"></i>'
+                                 +  '<div class="timeline-item">'
+                                    +'<span class="time" style="visibility:hidden;"><i class="fa fa-clock-o"></i>'+ d.timetoproccess+'</span>'                              
+                                          + '<span class="text-orange">'+d.observaciones+'</span>'
+                              +      '</div>'
+                                +'</li>'
+                         
+                         
+                            +'</ul>';
+    }
+              
+   $(document).ready(function() {
+                
+       
+                 $('#ordenesdaterange').html('<i class="fa fa-calendar"></i> '+ moment().hours(0).minutes(0).seconds(0).format('H:mm MMMM D, YYYY') + ' - ' + moment().hours(23).minutes(59).seconds(0).format('H:mm MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                 $('#ordenesdaterange').val(moment().hours(0).minutes(0).seconds(0).format('MM/DD/YYYY H:mm') + ' - ' + moment().hours(23).minutes(59).seconds(0).format('MM/DD/YYYY H:mm'));
+                 $('#ordenesdaterange').daterangepicker(
+                        {
+                            timePicker: true,
+                            timePickerIncrement: 5,
+                            timePicker12Hour:false,
+                            format: 'MM/DD/YYYY H:mm',
+                            ranges: {
+                                'Hoy': [moment().hours(0).minutes(0).seconds(0), moment().hours(23).minutes(59).seconds(0)],
+                                'Ayer': [moment().subtract('days', 1).hours(0).minutes(0).seconds(0), moment().subtract('days', 1).hours(23).minutes(59).seconds(0)],
+                                'Ultimos 7 dias': [moment().subtract('days', 6).hours(0).minutes(0).seconds(0), moment().hours(23).minutes(59).seconds(0)],
+                                'Ultimos 30 dias': [moment().subtract('days', 29).hours(0).minutes(0).seconds(0), moment().hours(23).minutes(59).seconds(0)],
+                                'Este Mes': [moment().startOf('month').hours(0).minutes(0).seconds(0), moment().endOf('month').hours(23).minutes(59).seconds(0)],
+                                'Mes Anterior': [moment().subtract('month', 1).startOf('month').hours(0).minutes(0).seconds(0), moment().subtract('month', 1).endOf('month').hours(23).minutes(59).seconds(0)]
+                            },
+                            startDate: moment(),
+                            endDate: moment()
+                        },
+                function(start, end) {
+                   
+                    $('#ordenesdaterange').html('<i class="fa fa-calendar"></i> '+ start.format('H:mm MMMM D, YYYY') + ' - ' + end.format('H:mm MMMM D, YYYY')+' <i class="fa fa-caret-down"></i>');
+                    $('#ordenesdaterange').val(start.format('MM/DD/YYYY H:mm') + ' - ' + end.format('MM/DD/YYYY H:mm'));
+                    //Cargar la tabla con los parametros seleccionados
+                     table.ajax.reload();                
+                }
+                );
+       
+        table = $('#cola').DataTable( {
+           "processing": true,
+           "serverSide": true,
+           "oLanguage": {
+                "sEmptyTable": "No existen datos para mostrar.",
+                "sSearch":'Buscar: ',
+                "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior",
+                        "sLast": "Fin",
+                        "sFirst": "inicio"
+                    },
+                "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ elementos",
+                "sInfoEmpty": "Mostrando 0 al 0 de 0 elementos",
+                "sLengthMenu": "Mostrar _MENU_ elementos",
+                "sLoadingRecords": "Cargando...",
+                "sProcessing": "Procesando...",
+                "sZeroRecords": "No se encontraron coincidencias",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ elementos)",
+                },
+        "ajax": 
+                {
+                    "url":"{{path('counter_load_cola')}}",
+                    "type":"POST",
+                    "data": function ( d ) {
+                            d.rangoOrdenes = $('#ordenesdaterange').val();
+                            d.estado=$("#state-chooser-btn").val();
+                            d.tipo=$("#type-chooser-btn").val();
+                            d.counter={{app.user.id}};
+                            // d.custom = $('#myInput').val();
+                            // etc
+                        },
+                    "dataType": "json"
+                },
+                
+        "columns": [
+            {
+                "class":          'details-control',
+                "width":          '3%',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
+            { "data": "numero_orden","sortable":false ,"width":          '5%'},
+            { "data": "prioridad","sortable":false ,"width":          '5%'},
+            { "data": "tiempo" ,"sortable":false, "width": '10%',},
+            { "data": "agente" ,"sortable":false,"width":'15%'},
+            { "data": "agencia" ,"sortable":false,"width":'20%'},
+            { "data": "estado" ,"sortable":false,"width":'10%'},
+            { "data": "fecha" ,"sortable":false,"width":'10%'},
+            { "data": "tipo" ,"sortable":false,"width":'7%'},
+            {
+                "data": null,
+                "width":'5%',
+                "sortable":false,
+                "render": function (data, type, full) 
+                {
+                    var adj=String('\'{{asset('uploads/adjuntos')}}/'+String(full.adjunto)+'\'');
+                    var result='';
+                    if(full.adjunto!=null)
+                        {
+                            result= '<a style="margin-left:3px;"  title="'+full.adjunto+'"  class=""onclick="openAdjunto('+adj+');" href="#" > <i style="font-weight:bold;" class="text-aqua fa fa-paperclip"></i>' + '</a>' ;
+                        }
+                    if(full.estado=='Pendiente')
+                        {
+                            return '<a style="margin-left:3px;" title="Procesar"  class="" href="'+full.procesar+'"'+' > <i class="fa fa-gear"></i>' + '</a>'+                                                                               
+                                    '<a style="margin-left:8px;"  title="Enviar Email"  class="text-green" href="'+full.email+'"'+' > <i class="fa fa-envelope"></i>' + '</a>'+
+                                    result
+                                ;
+                        }
+                        else
+                        { 
+                            return '<a style="margin-left:3px;"  title="Procesar"  class="text-red"href="'+full.mostrar+'"'+' > <i class="fa fa-folder-open"></i>' + '</a>' +
+                                    '<a style="margin-left:5px;" title="Enviar Email"  class="text-green" href="'+full.email+'"'+'> <i class="fa fa-envelope"></i>' + '</a>'+
+                                    result
+                                ;
+                        }
+                }
+            }
+            
+        ],
+        "order": []
+    } );
+    
+                                            
+    window.setInterval(function()
+    { 
+    table.ajax.reload();
+    }, 120000);
+  
+  
+    
+    // Add event listener for opening and closing details
+    $('#cola tbody').on('click', 'td.details-control', function () {
+       
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+            }
+        } );
+        
+        
+    } );
+  
+   // funcion para asignar una orden a un counter seleccionado
+
+   function asignar(numeroorden)
+   {
+       if($("#counters").val())
+        {
+         $("#aceptar").attr('data-dismiss','modal');   
+             $('#cola-interface').append(
+            '<div class="overlay"></div>'+
+            '<div class="loading-img"></div>'
+                );
+            $.ajax({
+            url: '{{path('supervisor_asignar_orden_manual')}}',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                orden: numeroorden,
+                counter:$("#counters").val()
+            },                          
+            success: function(result) {
+              
+                if(document.getElementById('flshinfo'))
+                {
+                    $("#flshinfo").remove();
+                    $( '<div id="flshinfo" class="alert alert-'+result[0]+' alert-dismissable">'+
+                                        '<i class="fa fa-check"></i>'+
+                                        '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+
+                                        '<b>Informaci&oacute;n!</b> '+result[1]+'.'+
+                                    '</div>' ).insertBefore( "#cola-interface" );
+                    
+                }
+                else
+                {
+                    $( '<div id="flshinfo" class="alert alert-'+result[0]+' alert-dismissable">'+
+                                        '<i class="fa fa-check"></i>'+
+                                        '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+
+                                        '<b>Informaci&oacute;n!</b> '+result[1]+'.'+
+                                    '</div>' ).insertBefore( "#cola-interface" );
+                }
+                
+               
+                $('#cola-interface > div.overlay').remove();
+                $('#cola-interface > div.loading-img').remove();
+                 table.ajax.reload();
+                 $("#error-notification").remove();
+            }
+            });
+        }
+        else
+        {
+            if(!document.getElementById('error-notification'))
+                {
+                     $( '<br><div id="error-notification" class="alert alert-danger alert-dismissable">'+
+                                        '<i class="fa fa-check"></i>'+
+                                        '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+
+                                        '<b>Informaci&oacute;n!</b> Debe seleccionar un counter obligatoriamente, para poder continuar con la asignaci&oacute;n.'+
+                                    '</div>' ).insertBefore( "#spaninfo" );
+                }
+            
+        }
+       
+     
+   }
+        </script>
+  {% endblock %}

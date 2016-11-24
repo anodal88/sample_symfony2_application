@@ -1,0 +1,7 @@
+EmisionesBundle_Cyborg_Save:
+    path:     /save/
+    defaults: { _controller: "EmisionesBundle:Cyborg:save" }
+
+EmisionesBundle_Cyborg_Login:
+    path:     /verify/login/
+    defaults: { _controller: "EmisionesBundle:Cyborg:login" }

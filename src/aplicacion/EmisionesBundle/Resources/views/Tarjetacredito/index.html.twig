@@ -1,0 +1,71 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Tarjetacredito list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Emisorvtc</th>
+                <th>Aerolinea</th>
+                <th>Bancoemisortarjeta</th>
+                <th>Tipotarjeta</th>
+                <th>Numerotarjeta</th>
+                <th>Propietario</th>
+                <th>Vence</th>
+                <th>Pin</th>
+                <th>Tipopago</th>
+                <th>Plazo</th>
+                <th>Tipoautorizacion</th>
+                <th>Numeroautorizacion</th>
+                <th>Valortarjeta</th>
+                <th>Interestarjeta</th>
+                <th>Valortotal</th>
+                <th>Pagopasajeros</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('tarjetacredito_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.emisorVtc }}</td>
+                <td>{{ entity.aerolinea }}</td>
+                <td>{{ entity.bancoEmisorTarjeta }}</td>
+                <td>{{ entity.tipoTarjeta }}</td>
+                <td>{{ entity.numeroTarjeta }}</td>
+                <td>{{ entity.propietario }}</td>
+                <td>{% if entity.vence %}{{ entity.vence|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.pin }}</td>
+                <td>{{ entity.tipoPago }}</td>
+                <td>{{ entity.plazo }}</td>
+                <td>{{ entity.tipoAutorizacion }}</td>
+                <td>{{ entity.numeroAutorizacion }}</td>
+                <td>{{ entity.valorTarjeta }}</td>
+                <td>{{ entity.interesTarjeta }}</td>
+                <td>{{ entity.valorTotal }}</td>
+                <td>{{ entity.pagoPasajeros }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('tarjetacredito_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('tarjetacredito_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('tarjetacredito_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

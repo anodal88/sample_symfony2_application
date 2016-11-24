@@ -1,0 +1,80 @@
+
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Configuracion list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tiempoasignacion</th>
+                <th>Tiemporespuestaplanpiloto</th>
+                <th>Tiemporespuestanormal</th>
+                <th>Emailviaticos</th>
+                <th>Emailvacaciones</th>
+                <th>Activa</th>
+                <th>Tiempoanulacion</th>
+                <th>Tiempoemision</th>
+                <th>Tiemporevision</th>
+                <th>Tiempofomapagocash</th>
+                <th>Tiempofomapagoplanpiloto</th>
+                <th>Tiempofomapagovtc</th>
+                <th>Tiempolocal</th>
+                <th>Tiemporemota</th>
+                <th>Tiempoporpasajero</th>
+                <th>Ponderacionplanpiloto</th>
+                <th>Ponderacionnoplanpiloto</th>
+                <th>Ponderacionemision</th>
+                <th>Ponderacionrevision</th>
+                <th>Ponderacionanulacion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('configuracion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.tiempoAsignacion }}</td>
+                <td>{{ entity.tiempoRespuestaPlanPiloto }}</td>
+                <td>{{ entity.tiempoRespuestaNormal }}</td>
+                <td>{{ entity.emailViaticos }}</td>
+                <td>{{ entity.emailVacaciones }}</td>
+                <td>{{ entity.activa }}</td>
+                <td>{{ entity.tiempoAnulacion }}</td>
+                <td>{{ entity.tiempoEmision }}</td>
+                <td>{{ entity.tiempoRevision }}</td>
+                <td>{{ entity.tiempoFomaPagoCash }}</td>
+                <td>{{ entity.tiempoFomaPagoPlanPiloto }}</td>
+                <td>{{ entity.tiempoFomaPagoVtc }}</td>
+                <td>{{ entity.tiempoLocal }}</td>
+                <td>{{ entity.tiempoRemota }}</td>
+                <td>{{ entity.tiempoPorPasajero }}</td>
+                <td>{{ entity.ponderacionPlanPiloto }}</td>
+                <td>{{ entity.ponderacionNoPlanPiloto }}</td>
+                <td>{{ entity.ponderacionEmision }}</td>
+                <td>{{ entity.ponderacionRevision }}</td>
+                <td>{{ entity.ponderacionAnulacion }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('configuracion_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('configuracion_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('configuracion_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Revision</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Numeroorden</th>
+                <td>{{ entity.numeroOrden }}</td>
+            </tr>
+            <tr>
+                <th>Reservapnr</th>
+                <td>{{ entity.reservaPnr }}</td>
+            </tr>
+            <tr>
+                <th>Tarifareserva</th>
+                <td>{{ entity.tarifaReserva }}</td>
+            </tr>
+            <tr>
+                <th>Datosboleto</th>
+                <td>{{ entity.datosBoleto }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('revision') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('revision_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,63 @@
+
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}  
+ {% endblock %}
+
+
+ {% block sidebar %}
+       {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Supervisor</small>
+    </h1>
+ {%endblock%}
+
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Asignar Orden</li>
+     <li class="active">Manual</li>
+ {% endblock %}
+
+ {% block area %}
+     <div class="col-sm-12">
+          
+              <div class="box box-primary">
+               <form action="{{path('supervisor_asignar_manual',{'id':id})}}" method="POST">
+                
+                                <div class="box-header">
+                                    <div class="pull-right box-tools pull-left">
+                                        
+                                        <a href="" title="" data-toggle="tooltip"  class="btn btn-circle btn-sm btn-bg bg-navy" data-original-title="Actualizar"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Asignacion Manual</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body ">
+                                    <div class="form-group" >
+                                            <label>Counters Habilitados</label>
+                                            <select size="15" class="form-control" name="counters" id="counters">
+                                                {%for ec in counters%}
+                                                    {%if orden.usuario and orden.usuario.id==ec.id%}
+                                                        <option selected="true" class="text-info" value="{{ec.id}}">{{ec.nombre}} {{ec.apellidos}}</option>
+                                                    {%else%}
+                                                        <option class="text-info" value="{{ec.id}}">{{ec.nombre}} {{ec.apellidos}}</option>
+                                                    {%endif%}
+                                                    {%else%}
+                                                       <option class="text-red" value="-1">No existen counters dispponibles para asignar esta orden...</option>
+                                                {%endfor%}
+                                            </select>
+                                      </div>
+
+                                        <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-check"></i> Asignar</button>
+                                    
+                                </div><!-- /.box-body -->
+                </form>
+                </div><!-- /.box -->
+               
+     </div>
+   
+ {% endblock %}

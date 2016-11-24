@@ -1,0 +1,132 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+     {{parent()}}
+           {# <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />#}
+           
+{% endblock %}
+
+
+    
+{% block sidebar %} 
+          {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+                        
+{%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Agentes</small>
+    </h1>
+ {%endblock%}
+ 
+{% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Adicionar Agente</li>
+ {% endblock %}
+     
+{% block area %}
+    <div class="col-sm-12 ">
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">                                       
+                                        
+                                        <a href="{{path('supervisor_index_agentes')}}" title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-navy btn-circle" data-original-title="Listar"><i class="fa fa-list"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Adicionar Agente</h3>
+                                   
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                   <form action="{{ path("supervisor_register_agente") }}" {{form_enctype(form) }} method="post">
+                                      
+                                       <div style="margin-left: 35%;" class="form-group row">
+                                            <img style="width: 37%; margin-left: -50%;" alt="User Image" id="userimage" class="img-responsive img-rounded" src="{{asset('bundles/base/img/user.png')}}">
+                                            {{ form_widget(form.foto) }}
+                                            <button style="margin-left: -10%;margin-top: -30%;" class="btn btn-xs btn-primary" type=button onclick="this.form.aplicacion_emisionesbundle_agente_foto.click()"><i class="fa fa-picture-o"></i> <span id="info" >Subir Foto</span></button>
+                                            
+                                            <p class="help-block">{{form_errors(form.foto)}}</p>
+
+                                        </div>
+                                       
+                                       <div class="row">  
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label >{{'form.email'|trans}}</label>
+                                                    {{ form_widget(form.email) }}
+                                                        <p class="help-block">{{form_errors(form.email)}}</p>
+                                                </div>
+                                            <div class="form-group">
+                                                <label >{{'form.username'|trans}}</label>
+                                                    {{ form_widget(form.username) }}
+                                                    <p class="help-block">{{form_errors(form.username)}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >{{'form.password'|trans}}</label>                        
+                                                    {{ form_widget(form.plainPassword) }}
+                                                    <p class="help-block">{{form_errors(form.plainPassword)}}</p>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.name'|trans}}</label>
+                                                    {{ form_widget(form.nombre) }}
+                                                    <p class="help-block">{{form_errors(form.nombre)}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.apellidos'|trans}}</label>
+                                                    {{ form_widget(form.apellidos) }}
+                                                    <p class="help-block">{{form_errors(form.apellidos)}}</p>
+                                                </div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label >{{'registration.agente.ci'|trans}}</label>
+                                                    {{ form_widget(form.ci) }}
+                                                    <p class="help-block">{{form_errors(form.ci)}}</p>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.sex'|trans}}</label>
+                                                    {{ form_widget(form.sexo) }}
+                                                    <p class="help-block">{{form_errors(form.sexo)}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.movil'|trans}}</label>
+                                                    {{ form_widget(form.celular) }}
+                                                    <p class="help-block">{{form_errors(form.celular)}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.phone'|trans}}</label>
+                                                    {{ form_widget(form.telefono) }}
+                                                    <p class="text-info pull-right">Ej: 593 02 563 8749 &oacute; 593-04-253-5647</p>
+                                                    <p class="help-block">{{form_errors(form.telefono)}}</p>
+                                                </div>
+                                             
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.ext'|trans}}</label>
+                                                    {{ form_widget(form.ext) }}
+                                                    <p class="help-block">{{form_errors(form.ext)}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >{{'registration.agente.agency'|trans}}</label>
+                                                    {{ form_widget(form.agencia) }}
+                                                    <p class="help-block">{{form_errors(form.agencia)}}</p>
+                                                </div>
+                                            </div>  
+                                            </div>
+                                            
+                                             
+                                       {{form_rest(form)}}
+                                            <div class="footer">                                                               
+                                                <button type="submit"   class="btn bg-blue-gradient "><i class="fa fa-save"></i> {{ 'layout.register'|trans }}</button>  
+
+                                            
+                                            </div>
+                                    </form>
+                                
+                                    
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+        </div>
+  {% endblock %}
+

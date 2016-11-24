@@ -1,0 +1,118 @@
+
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+        
+    {% block logo %}
+        <img src="{{asset('bundles/base/img/logos/logo1.png')}}" style="width: 20%;" alt="cross"/>
+    {% endblock%}
+        
+   {% block projectname %}
+        CrossFire
+   {% endblock %}
+        
+ {% block sidebar %} 
+                        <li class="">
+                            <a href="{{path('ordenes')}}">
+                                <i class="fa fa-align-justify"></i> <span>Ordenes Pendientes</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{path('emision_edit',{'id':entity.id})}}">
+                                <i class="fa fa-cog"></i> <span>Procesar Orden</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{path('render_email',{'entity':entity.id})}}">
+                                <i class="fa fa-envelope"></i> <span>Enviar Email Agente</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{{path('formapago',{'orden':entity.id})}}" >
+                                <i class="fa  fa-credit-card"></i> <span>Formas Pago</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{{path('tarjetacredito_show',{'id':fp.id,'orden':entity.id})}}" >
+                                <i class="fa  fa-barcode"></i> <span>{{fp.transaccion}}</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#" id="pdf">
+                                <i class="fa fa-download"></i> <span>PDF</span>
+                            </a>
+                        </li>
+                         
+                                                          
+                                        
+                        
+                        
+                       
+                        
+                       
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Formas de Pago</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Formas de Pago</li>
+ {% endblock %}
+  
+ {% block area %}
+     
+     <div class="col-sm-9 box box-solid box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">Formas de Pago Orden: {{entity.id}}</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                     
+      <table class="table table-responsive table-bordered table-condensed table-striped">
+        <tbody>
+            
+            <tr>
+                <th>Banco</th>
+                <td>{{ fp.banco }}</td>
+            </tr>
+            <tr>
+                <th>N&uacute;mero Documento</th>
+                <td>{{ fp.numeroDocumento }}</td>
+            </tr>
+            <tr>
+                <th>Valor</th>
+                <td>{{ fp.valor }}</td>
+            </tr>
+            <tr>
+                <th>Transacci&oacute;n</th>
+                <td>{{ fp.transaccion }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}
+      
+         {% include 'EmisionesBundle:Snippets:exportarpdf.html.twig' %}
+        
+  {% endblock %}
+
+
+
+
+
+
+
+   

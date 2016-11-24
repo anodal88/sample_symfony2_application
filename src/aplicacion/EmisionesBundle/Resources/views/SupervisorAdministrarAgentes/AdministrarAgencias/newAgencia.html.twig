@@ -1,0 +1,111 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+     {{parent()}}
+           {# <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />#}
+           
+{% endblock %}
+
+    
+{% block sidebar %} 
+          {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+                        
+{%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Agencias</small>
+    </h1>
+ {%endblock%}
+ 
+{% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Adicionar Agencia</li>
+ {% endblock %}
+     
+{% block area %}
+     <div class="col-sm-12 ">
+     <div class="box box-primary" >
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        <a href="{{path('supervisor_index_agencias')}}" title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-navy btn-circle" data-original-title="Listar"><i class="fa fa-list"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Adicionar Agencia</h3>
+                                   
+                                </div><!-- /.box-header -->
+                                
+                                   <form role="form" action="{{ path("supervisor_register_agencia") }}" {{form_enctype(form) }} method="post">
+                                     
+                                       
+                                       <div style="margin-left: 40%;" class="form-group">
+                                                <img style="width: 20%;" alt="Logotipo" id="empresalogo" class="img-responsive img-rounded img-thumbnail" src="
+                                                     {%if entity.logo%}
+                                                        {{asset('uploads/agencias/')~entity.logo}}
+                                                     {%else%}
+                                                        {{asset('uploads/agencias/No-Logo.gif')}}
+                                                     {%endif%}
+                                                    ">
+                                                {{ form_widget(form.logo) }}
+                                                <button class="btn btn-xs btn-primary" type=button onclick="this.form.aplicacion_emisionesbundle_agencia_logo.click(); "><i class="fa fa-picture-o"></i> <span id="info" >Subir Logo</span></button>
+                                                <p class="help-block">{{form_errors(form.logo)}}</p>
+                                            </div>
+                                     
+                                       
+                                       <div class="box-body">  
+                                           
+                                                <div class="form-group">
+                                                    <label >Nombre:</label>
+                                                    {{ form_widget(form.nombre) }}
+                                                        <p class="help-block">{{form_errors(form.nombre)}}</p>
+                                                </div>
+                                            <div class="form-group">
+                                                <label >Ruc:</label>
+                                                    {{ form_widget(form.ruc) }}
+                                                    <p class="help-block">{{form_errors(form.ruc)}}</p>
+                                                </div>
+                                           <div class="form-group">
+                                                    <label >Email:</label>
+                                                    {{ form_widget(form.email) }}
+                                                    <p class="help-block">{{form_errors(form.email)}}</p>
+                                                </div>
+                                           <div class="form-group">
+                                                    <label >Tel&eacute;fono:</label>
+                                                    {{ form_widget(form.telefono) }}
+                                                    <p class=" pull-right text-info">Ej. 593 02 XXX XXXX &oacute; 593-02 456-4567--5698 &oacute; 593-04-XXX-XXXX--EXT &oacute; combinaci&oacute;n </p>
+                                                    <p class="help-block">{{form_errors(form.telefono)}}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >Direcci&oacute;n:</label>                        
+                                                    {{ form_widget(form.direccion) }}
+                                                    <p class="help-block">{{form_errors(form.direccion)}}</p>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label >Ciudad:</label>
+                                                    {{ form_widget(form.ciudad) }}
+                                                    <p class="help-block">{{form_errors(form.ciudad)}}</p>
+                                                </div>
+                                           <div class="form-group">
+                                               <label >Aerolineas Plan Piloto:</label>
+                                               
+                                                {{ form_widget(form.aerolineasPlanPiloto) }}
+                                               <p class=" text-info pull-right"><b>Para selecci&oacute;n m&uacute;ltiple presione Ctrl+Click</b></p>
+                                                <p class="help-block">{{form_errors(form.aerolineasPlanPiloto)}}</p>
+                                            </div>
+                                            </div>
+                                            
+                                             
+                                       {{form_rest(form)}}
+                                            <div class="box-footer">                                                               
+                                                <button type="submit"   class="btn btn-sm bg-blue-gradient "><i class="fa fa-save"></i> {{ 'layout.register'|trans }}</button>  
+
+                                            
+                                            </div>
+                                    </form>
+                              
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+

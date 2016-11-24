@@ -1,0 +1,40 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+     {{parent()}}          
+{% endblock %}
+
+
+    
+{% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:agente.html.twig' %}
+ {% endblock %}
+                        
+{%block titlepage %}
+     <h1>
+        Agente
+        <small>Pantalla</small>
+    </h1>
+ {%endblock%}
+ 
+{% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Perfil</li>
+ {% endblock %}
+     
+{% block area %}
+     <div class="col-sm-12">
+     <div class="box box-primary">
+                                <div class="box-header">
+                                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    Para modificar su contrase&ntilde;a utilice el me&uacute; de la izquierda.
+
+                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+         </div>
+  {% endblock %}
+
+

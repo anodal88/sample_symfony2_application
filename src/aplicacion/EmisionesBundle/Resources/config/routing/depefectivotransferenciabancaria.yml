@@ -1,0 +1,30 @@
+depefectivotransferenciabancaria:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:index" }
+
+depefectivotransferenciabancaria_show:
+    path:     /{id}/show/{orden}/
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:show" }
+
+depefectivotransferenciabancaria_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:new" }
+
+depefectivotransferenciabancaria_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:create" }
+    requirements: { _method: post }
+
+depefectivotransferenciabancaria_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:edit" }
+
+depefectivotransferenciabancaria_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:update" }
+    requirements: { _method: post|put }
+
+depefectivotransferenciabancaria_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:DepefectivoTransferenciabancaria:delete" }
+    requirements: { _method: post|delete }

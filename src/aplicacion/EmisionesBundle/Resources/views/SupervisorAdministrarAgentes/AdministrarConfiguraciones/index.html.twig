@@ -1,0 +1,253 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+        
+ 
+{% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Configuraci&oacute;n</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Supervisor</li>
+     <li class="active">Par&aacute;metros Globales</li>
+ {% endblock %}
+     
+ {% block area %}
+    <div class="col-sm-12 "> 
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        <a href="{{path('supervisor_new_configuracion')}}" title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-blue btn-circle" data-original-title="Registrar"><i class="fa fa-plus"></i></a>
+                                        <a href="#" onclick="table.ajax.reload();" title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-navy btn-circle" data-original-title="Actualizar"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Todos las configuraciones</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                    <hr>
+                                    <table id="configuraciones"   class="table table-condensed table-bordered table-striped" cellspacing="0" width="100%">
+                                        <thead class="text-blue">
+                                            <tr >
+                                                
+                                                <th style="text-align: center;"></th>
+                                                <th style="text-align: center;">Nombre</th>                                               
+                                                <th style="text-align: center;">Horario Atenci&oacute;n</th>
+                                                <th style="text-align: center;">Email Vi&aacute;ticos</th>
+                                                <th style="text-align: center;">Email Vacaciones</th>
+                                                <th style="text-align: center;">Acciones</th>
+                                                  
+                                               
+                                            </tr>
+                                        </thead>
+
+                                      
+                                    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+        </div>
+  {% endblock %}
+
+{% block javascripts %}
+      {{parent()}}
+       <script src="{{ asset('bundles/base/js/plugins/datatables/1.10.4/jquery.dataTables.js') }}" type="text/javascript"></script>
+       <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+           <script type="text/javascript">
+            /* Formatting function for row details - modify as you need */
+            function format ( d ) {
+                // `d` is the original data object for the row
+                return '<table class="table-condensed " cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+                    
+                    '<tr>'+
+                        '<td class="text-blue">Nombre</td>'+
+                        '<td>'+d.nombre+'</td>'+
+                        '<td class="text-blue">Tiempo Emisi&oacute;n</td>'+
+                        '<td>'+d.tiempoemision+'</td>'+
+                        '<td class="text-blue">Tiempo IATA Local</td>'+
+                        '<td>'+d.tiempoiatalocal+'</td>'+
+                         '<td class="text-blue">Ponderaci&oacute;n Orden Plan Piloto</td>'+
+                        '<td>'+d.ponderacionpp+'</td>'+                       
+                    '</tr>'+
+                    '<tr>'+
+                        '<td class="text-blue">Empresa</td>'+
+                        '<td>'+d.empresa+'</td>'+
+                        '<td class="text-blue">Tiempo Revisi&oacute;n</td>'+
+                        '<td>'+d.tiemporevision+'</td>'+
+                        '<td class="text-blue">Tiempo IATA Remoto</td>'+
+                        '<td>'+d.tiempoiataremoto+'</td>'+
+                         '<td class="text-blue">Ponderaci&oacute;n Orden Normal</td>'+
+                        '<td>'+d.ponderacionnormal+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td class="text-blue">&Uacute;ltimo Counter</td>'+
+                        '<td>'+d.lastcounter+'</td>'+
+                        '<td class="text-blue">Tiempo Forma Pago Cash</td>'+
+                        '<td>'+d.tiempofpcash+'</td>'+
+                        '<td class="text-blue">Tiempo x Pasajero</td>'+
+                        '<td>'+d.tiempoxpasajero+'</td>'+
+                        '<td class="text-blue">Ponderaci&oacute;n Orden Tipo Emisi&oacute;n</td>'+
+                        '<td>'+d.ponderacionemision+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td class="text-blue">Activa</td>'+
+                        '<td>'+d.activa+'</td>'+
+                        '<td class="text-blue">Tiempo Forma Pago Plan Piloto</td>'+
+                        '<td>'+d.tiempofppp+'</td>'+
+                        '<td class="text-blue">SLA Plan Piloto</td>'+
+                        '<td>'+d.slapp+'</td>'+
+                        '<td class="text-blue">Ponderaci&oacute;n Orden Tipo Revisi&oacute;n</td>'+
+                        '<td>'+d.ponderacionrevision+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td class="text-blue">Tiempo Anulaci&oacute;n</td>'+
+                        '<td>'+d.tiempoanulacion+'</td>'+
+                         '<td class="text-blue">Tiempo Forma Pago Vtc</td>'+
+                        '<td>'+d.tiempofpvtc+'</td>'+
+                        '<td class="text-blue">SLA</td>'+
+                        '<td>'+d.sla+'</td>'+
+                        '<td class="text-blue">Ponderaci&oacute;n Orden Tipo Anulasi&oacute;n</td>'+
+                        '<td>'+d.ponderacionanulacion+'</td>'+
+                    '</tr>'+
+                     '<tr>'+
+                        '<td class="text-blue">Ponderaci&oacute;n SVI</td>'+
+                        '<td>'+d.ponderacionsvi+'</td>'+
+                        '<td class="text-blue">Ponderaci&oacute;n NO SVI</td>'+
+                        '<td>'+d.ponderacionnosvi+'</td>'+
+                        '<td class="text-blue">Tiempo Primera Alerta</td>'+
+                        '<td>'+d.tiempoprimeraalerta+'</td>'+
+                        '<td class="text-blue">Tiempo Segunda Alerta</td>'+
+                        '<td>'+d.tiemposegundaalerta+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td class="text-red"><b>Fee Emergencia:</b></td>'+
+                        '<td class="text-red" colspan=7>$ '+d.feeEmergencia+' USD</td>'+
+                    '</tr>'+
+
+                    '<tr>'+
+                        '<td class="text-orange"><b>Descripci&oacute;n:</b></td>'+
+                        '<td class="text-orange" colspan=7>'+d.descripcion+'</td>'+
+                    '</tr>'+
+                '</table>';
+            }
+         
+                
+            $(document).ready(function() {
+                  
+                    table= $('#configuraciones').DataTable( 
+                                            {
+                                                bFilter: true,
+                                                bInfo: true,
+                                                "oLanguage": {
+                                                    "sEmptyTable": "No existen datos para mostrar.",
+                                                    "sSearch":'Buscar: ',
+                                                    "oPaginate": {
+                                                            "sNext": "Siguiente",
+                                                            "sPrevious": "Anterior",
+                                                            "sLast": "Fin",
+                                                            "sFirst": "inicio"
+                                                        },
+                                                    "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ elementos",
+                                                    "sInfoEmpty": "Mostrando 0 al 0 de 0 elementos",
+                                                    "sLengthMenu": "Mostrar _MENU_ elementos",
+                                                    "sLoadingRecords": "Cargando...",
+                                                    "sProcessing": "Procesando...",
+                                                    "sZeroRecords": "No se encontraron coincidencias",
+                                                    "sInfoFiltered": "(filtrado de un total de _MAX_ elementos)",
+                                                    },
+                                                bJQueryUI: true,                        
+                                                bPaginate: true,
+                                                bStateSave: false,
+                                                bSort: true,
+                                                bProcessing: true,
+                                                aoColumns: [ 
+                                                    {  
+                                                        "mData" : null,
+                                                        "sWidth":"3%",
+                                                        "sClass":'details-control',
+                                                        "sDefaultContent": '',
+                                                        "orderable": false,
+                                                        "bSortable": false,
+                                                    },
+                                                    {"mData" : "nombre","sWidth":"20%","orderable": false},
+                                                    //{"mData" : "tasignacion","sWidth":"5%","orderable": false},
+                                                    {"mData" : "horario","sWidth":"10%","orderable": false}, 
+                                                    {"mData" : "emailviaticos","sWidth":"10%","orderable": false}, 
+                                                    {"mData" : "emailvacaciones","sWidth":"15%","orderable": false}, 
+                                                    {
+                                                            "mData": null,
+                                                            "bSortable": false,
+                                                            "sWidth":"5%",
+                                                            "mRender": function (data, type, full) 
+                                                            {
+                                                                result='';
+                                                                if(full.iconoactiva=='fa fa-star')
+                                                                    {
+                                                                        result+='<a style="margin-left:3px;" title="" data-toggle="tooltip" data-original-title="Remove" href='+'"'+full.editar+'"'+' ><i class="fa fa-edit"></i>' + '</a>'
+                                                                        +'<a style="margin-left:3px;"  class="text-orange" href='+'"'+full.activardesactivar+'"'+' > <i class="'+full.iconoactiva+'"></i>' + '</a>'
+                                                                        +'<a style="margin-left:3px;"  class=""href='+'"'+full.copiar+'"'+' > <i class="fa fa-copy"></i>' + '</a>';
+                                                                    }
+                                                                else
+                                                                    {
+                                                                        result+='<a style="margin-left:3px;" title="" data-toggle="tooltip" data-original-title="Remove" href='+'"'+full.editar+'"'+' ><i class="fa fa-edit"></i>' + '</a>'
+                                                                        +'<a style="margin-left:3px;"  class="" href='+'"'+full.activardesactivar+'"'+' > <i class="'+full.iconoactiva+'"></i>' + '</a>'
+                                                                        +'<a style="margin-left:3px;"  class="" href='+'"'+full.copiar+'"'+' > <i class="fa fa-copy"></i>' + '</a>'
+                                                                        +'<a style="margin-left:3px;"  class="text-red" href='+'"'+full.remove+'"'+'  > <i class="fa fa-trash-o"></i>' + '</a>';
+                                                                    }
+                                                                    return result                                                                        
+                                                                ; 
+                                                            }
+                                                     }
+                                                 
+
+                                                ], 
+                                                order: [],//siempre ordena de mayor a menor
+                                                sAjaxSource: "{{path('supervisor_load_configuraciones')}}",
+                                                sServerMethod: "POST",
+                                                "fnServerParams": function ( aoData ) 
+                                                {
+                                                    aoData.push( 
+                                                    //{ "name": "rangoOrdenes", "value": $('#ordenesdaterange').val() },
+                                                    //{ "name": "estado", "value": $("#state-chooser-btn").val() },
+                                                    //{ "name": "tipo", "value": $("#type-chooser-btn").val() },
+                                                    //{ "name": "counter", "value": $("#counter-chooser-btn").val() }
+                                                    );
+                                                }
+                                            } ); 
+                                            
+                                               window.setInterval(function()
+                            { 
+                            table.ajax.reload();
+                            }, 120000);
+  
+   // Add event listener for opening and closing details
+    $('#configuraciones tbody').on('click', 'td.details-control', function () {
+       
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+            }
+        } );
+                       
+          
+                    } );
+        </script>
+  {% endblock %}

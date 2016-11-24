@@ -1,0 +1,30 @@
+agencia:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Agencia:index" }
+
+agencia_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Agencia:show" }
+
+agencia_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Agencia:new" }
+
+agencia_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Agencia:create" }
+    requirements: { _method: post }
+
+agencia_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Agencia:edit" }
+
+agencia_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Agencia:update" }
+    requirements: { _method: post|put }
+
+agencia_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Agencia:delete" }
+    requirements: { _method: post|delete }

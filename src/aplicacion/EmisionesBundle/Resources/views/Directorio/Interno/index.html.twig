@@ -1,0 +1,140 @@
+
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+        
+    {% block logo %}
+        <img src="{{asset('bundles/base/img/logos/logo1.png')}}" style="width: 20%;" alt="cross"/>
+    {% endblock%}
+        
+   {% block projectname %}
+        CrossFire
+   {% endblock %}
+        
+ {% block sidebar %}
+       
+       
+       
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Ordenes</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="active">Solicitudes</li>
+ {% endblock %}
+  
+ {% block area %}
+     
+     <div class="col-sm-9 box box-solid box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">Todas las &Oacute;rdenes</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                     
+                                    <table id="example2" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Estado</th>
+                                                <th>Agente</th>
+                                                <th>Agencia</th>
+                                                <th>Fecha-Hora</th>
+                                                <th>Gds</th>
+                                                <th>Tipo Boleto</th>
+                                                <th>Tipo Orden</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                          {%for item in ordenes%}
+                                         
+                                              <tr>
+                                                  <td>
+                                                      
+                                                      {%if item.estado == 'Pendiente'%}                                                         
+                                                          <small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.timeToProcess}}</small>
+                                                      {%endif%}
+                                                      
+                                                  </td>
+                                                  <td>
+                                                      {{item.agente}}
+                                                  </td>
+                                                  <td>
+                                                      {{item.agente.agencia}}
+                                                  </td>
+                                                  <td>
+                                                      
+                                                      {{item.fecha|date("d-M-Y H:i:s")}}
+                                                     
+                                                  </td>
+                                                  <td>
+                                                      {{item.gds}}
+                                                  </td>
+                                                  <td>
+                                                      {{item.tipoBoleto}}
+                                                  </td>
+                                                  <td>
+                                                      {{item.tipo}}
+                                                  </td>
+                                                   <td>
+                                                      <div class="box-tools">
+                                                          {%if item.comentario%}
+                                                               <a class="btn btn-google-plus btn-sm" data-toggle="tooltip" title="" data-original-title="{{item.comentario}}">
+                                                                   <i class="fa fa-comments"></i></a>
+                                                              <a class="btn btn-github btn-sm" href="{{path('render_email',{'entity':item.id})}}" data-toggle="tooltip" title="" data-original-title="Enviar email al gente con los datos de la orden.">
+                                                                   <i class="fa fa-envelope"></i></a>
+                                                           {%endif%}
+                                                          <a class="btn btn-bitbucket  btn-sm" data-widget="" href="
+                                                             {%if item.tipo == 'Emision'%}
+                                                                {{path('emision_edit',{'id':item.id})}}
+                                                             {%elseif item.tipo == 'Revision'%}
+                                                                {{path('revision_edit',{'id':item.id})}} 
+                                                             {%elseif item.tipo == 'Anulacion'%}
+                                                                {{path('anulacion_edit',{'id':item.id})}} 
+                                                              {%endif%}     
+                                                             " data-toggle="tooltip" title="" data-original-title="Procesar"><i class="fa fa-cogs"></i></a>
+                                                           
+                                                      </div>
+                                                  </td>
+                                              </tr>
+                                    
+                                          {%endfor%}
+                                        </tbody>
+                                        
+                                    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}
+      <script src="{{ asset('bundles/base/js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+           <script type="text/javascript">
+           $(document).ready(function(){
+               
+                  
+              $('#calendar').datepicker('setDate', new Date( {{fechat[0]}},  {{fechat[1]-1}},  {{fechat[2]}}));
+                
+                $('#directorio').dataTable({
+                    "bPaginate": true,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bSort": true,
+                    "bInfo": true,
+                    "bAutoWidth": false                   
+                });
+            });
+         
+        </script>
+  {% endblock %}

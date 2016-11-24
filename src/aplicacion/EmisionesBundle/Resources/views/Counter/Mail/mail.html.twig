@@ -1,0 +1,142 @@
+
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            
+        {% endblock %}
+        
+
+{% block sidebar %} 
+  {% include 'EmisionesBundle:Menu:submenucounter.html.twig' %}                         
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Enviar email</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Emisiones</li>
+     <li class="active">Enviar email</li>
+ {% endblock %}
+  
+ {% block area %}
+      {#{% block notificaciones %}{% endblock %}#}
+     <div class="col-md-12">
+
+       <div class="box box-primary">
+           <form id="sendmail" method="post" action="{{path('counter_enviar_email')}}" enctype="multipart/form-data">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-envelope"></i> Enviar email </h3>
+                    <div class="pull-right box-tools">                      
+                                        
+                        <button  type="submit" class="btn btn-primary btn-sm"><i class="fa fa-sign-in"></i> Enviar</button>                                        
+                       </div>
+                </div>
+                
+                <div class="box-body">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Para:</span>
+                                     {%set cont =0%}   {%set contCash =0%}
+                                    
+                                    {%set dirs = entity.agente.email~';'~entity.usuario.email~';emisiones@mymtravel.com;'%}
+                                    
+                                    {%if entity.estado.id==3%}
+                                        {%if entity.agente.agencia.id==363%}
+                                            {%if entity.ciudadDestino.id==1%}{#Quito#}
+                                                {%set dirs = dirs ~ "erick.betancourt@mymtravel.com;"%}
+                                            {%endif%}
+                                            {%if entity.ciudadDestino.id==2%}{#Guayaquil#}
+                                                {%set dirs = dirs ~ "alexandra.cuesta@mymtravel.com;"%}
+                                            {%endif%}
+                                        {%else%}
+                                                {%for fp in entity.formasPagos%}                                        
+                                                    {%if fp.tipo =='Tarjeta Credito' and cont==0%}
+                                                        {%set cont = cont+1%}
+                                                    {%endif%}
+                                                    {%if fp.tipo =='DETB' or fp.tipo=='Pago Directo'%}
+                                                        {%set contCash = contCash+1%}
+                                                    {%endif%}
+                                                {%endfor%}                                        
+                                                {%set dirs = dirs ~ "facturacion@mymtravel.com;"%}
+
+                                                {%if entity.isPilotPlan == false and cont>0%}
+                                                    {%set dirs = dirs ~ "vtc@mymtravel.com;"%}
+                                                {%endif%}
+                                                {%if contCash>0 and entity.ciudadDestino.id==1%}{#Quito#}
+                                                    {%set dirs = dirs ~ "caja@mymtravel.com;"%}
+                                                {%endif%}
+                                                {%if contCash>0 and entity.ciudadDestino.id==2%}{#Guayaquil#}
+                                                    {%set dirs = dirs ~ "cajagye@mymtravel.com;"%}
+                                                {%endif%}
+                                         {%endif%}
+                                       
+                                    {%endif%}
+                                    <input readonly="true" required="true" value="{{dirs}}" style="color: blue;font-size: 16px;" type="email"  placeholder="Email TO" class="form-control input-sm" name="email_to" id="email_to">
+                                 
+                                    <span data-toggle="tooltip" title="" data-original-title="Campo Obligatorio" class="input-group-addon"><b style="color: red;">*</b></span>
+                                    <input  type="hidden" name="sender" id="sender" value="{{app.user.email}}">
+                                    <input  type="hidden" name="entity" id="entity" value="{{entity.id}}">
+                               </div>
+                            </div>
+                        
+                       {# <div id="cc" class="form-group" >
+                                <div class="input-group" >
+                                    <span class="input-group-addon">CC:</span>
+                                    <input style="color: blue;" type="email" placeholder="Email CC" class="form-control input-sm" name="email_cc" id="email_cc">
+                                </div>
+                            </div>
+                            <div id="bcc" class="form-group" >
+                                <div class="input-group">
+                                    <span class="input-group-addon">BCC:</span>
+                                    <input style="color: blue;" type="email" placeholder="Email BCC" class="form-control input-sm" name="email_bcc" id="email_bcc">
+                                </div>
+                            </div>#}
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Asunto:</span>
+                                    <input required="true" type="text" placeholder="Asunto" class="form-control input-sm" name="email_subject" id="email_subject">
+                                    <span data-toggle="tooltip" title="" data-original-title="Campo Obligatorio"class="input-group-addon"><b style="color: red;">*</b></span>
+                                </div>
+                            </div>
+                       
+                            <div class="form-group">
+                                <textarea style="height: 300px;font-size: 18px;" placeholder="Mensaje" class="form-control input-sm" id="email_message" name="email_message">
+                               
+                                </textarea>
+                            </div>
+                        
+                            
+                                
+                   
+                   </div>
+                 
+                    <div class="box-footer">
+                        <div class="form-group">                              
+                                <input id="upl" type=file name="upl" style="visibility:hidden;position:absolute;top:0;left:0" onchange="document.getElementById('info').innerHTML=this.value+'&nbsp;&nbsp;&nbsp;'+ Math.round(this.files[0].size/1024*100)/100+' KB'">  
+                                <button class="btn btn-xs btn-primary" type=button onclick="this.form.upl.click()"><i class="fa fa-paperclip"></i> <span id="info" >Adjuntar Archivos</span></button>                               
+                                <p class="help-block">Para adjuntar m&uacute;ltiples archivos comprimalos en un solo fichero.</p>
+                            </div> 
+                            
+                    </div>
+               </form>             
+            
+            </div><!-- /.box -->
+                            
+
+                            
+
+     </div>
+     
+  {% endblock %}
+     {% block javascripts %}
+      {{parent()}}
+     
+      {% include 'EmisionesBundle:Snippets:exportarpdf.html.twig' %}
+  {% endblock %}
+  

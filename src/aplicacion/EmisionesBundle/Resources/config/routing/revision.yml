@@ -1,0 +1,30 @@
+revision:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Revision:index" }
+
+revision_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Revision:show" }
+
+revision_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Revision:new" }
+
+revision_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Revision:create" }
+    requirements: { _method: post }
+
+revision_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Revision:edit" }
+
+revision_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Revision:update" }
+    requirements: { _method: post|put }
+
+revision_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Revision:delete" }
+    requirements: { _method: post|delete }

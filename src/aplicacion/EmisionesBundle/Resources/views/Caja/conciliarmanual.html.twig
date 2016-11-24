@@ -1,0 +1,282 @@
+
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}  
+ {% endblock %}
+
+
+ {% block sidebar %}
+        
+    
+    {%if 'ROLE_CAJA' in app.user.roles%} 
+        {% include 'EmisionesBundle:Menu:caja.html.twig' %}
+    {%elseif 'ROLE_SUPERVISOR_COBRANZA' in app.user.roles%} 
+        {% include 'EmisionesBundle:Menu:supervisorcobranza.html.twig' %}
+    {%endif%}
+ {% endblock %}
+
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>M&oacute;dulo Caja</small>
+    </h1>
+ {%endblock%}
+
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Conciliar Orden</li>
+     <li class="active">Manual</li>
+ {% endblock %}
+
+ {% block area %}
+     <div class="col-sm-12">
+          <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#tab_1">Conciliar</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab_2">Formas de Pago</a></li>
+                                     <li class=""><a data-toggle="tab" href="#tab_3">Documento de Respaldo</a></li>
+                                     <h4 style="margin-right: 10px;" class=" pull-right"><i class="fa fa-suitcase"></i> {{entity.agente.agencia}}&nbsp;&nbsp;{{entity.agente.agencia.ruc}}</h4>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="tab_1" class="tab-pane active">
+                                        <div class="row">
+                                            <div class="col-sm-12" style="height: 200px;">
+                                                            <label class="control-label"> Historial</label>
+                                                            <br>
+                                                             {{entity.detalleAprobacion|raw}}
+                                                        </div>
+                                         </div>
+                                        <hr>
+                                        <form action="{{path('operador_conciliar_manual',{'id':entity.id})}}" method="POST">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="col-sm-3 form-group">
+                                                        <label class="control-label"> Conciliar</label>
+                                                        <select name="aprobadoCaja" id="aprobadoCaja" class="form-control" size="5">
+                                                            {% if  'ROLE_CAJA' in  app.user.roles %}
+                                                                {%if entity.aprobadoCaja=='Pendiente Pago'%}
+                                                                    <option selected="selected" value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option  value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                {%elseif entity.aprobadoCaja=='Pago Confirmado'%}
+                                                                    <option  value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option selected="selected" value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                {%else%}
+                                                                    <option  value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option  value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                {%endif%}
+                                                            {%endif%}
+                                                            {% if  'ROLE_SUPERVISOR_COBRANZA' in  app.user.roles %}
+                                                                {%if entity.aprobadoCaja=='Pendiente Pago'%}
+                                                                    <option selected="selected" value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option  value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                    <option  value='Anulada'>ANULADA</option>
+                                                                {%elseif entity.aprobadoCaja=='Pago Confirmado'%}
+                                                                    <option  value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option selected="selected" value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                    <option  value='Anulada'>ANULADA</option>
+                                                                {%elseif entity.aprobadoCaja=='Anulada'%}
+                                                                    <option  value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option  value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                    <option selected="selected" value='Anulada'>ANULADA</option>
+                                                                {%else%}
+                                                                    <option  value='Pendiente Pago'>PENDIENTE PAGO</option>
+                                                                    <option  value='Pago Confirmado'>PAGO CONFIRMADO</option>
+                                                                    <option  value='Anulada'>ANULADA</option>
+                                                                {%endif%}
+                                                            {%endif%}
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-9 form-group">
+                                                        <label class="control-label"> Detalle</label>
+                                                        <textarea style="height: 150px;" name="detalleAprobacion" id="detalleAprobacion" class="form-control"></textarea>
+                                                    </div>
+                                                    
+                                                    {% if  'ROLE_SUPERVISOR_COBRANZA' in  app.user.roles %}
+                                                    <div class='row'>
+                                                        {%if anulacionGenerada!='No Generada'%}
+                                                            <hr>
+                                                            <b style="margin-left: 30px;">{{anulacionGenerada}}</b>
+                                                            <hr>
+                                                        {%endif%}
+                                                    </div>
+                                                    {%endif%}
+                                                    <div class="box-footer ">
+                                                        {%if anulacionGenerada=='No Generada'%}{#Es porque no se ha generado anulacion entonces permito el boton#}
+                                                            <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-check"></i> Aceptar</button>                                                        
+                                                        {%endif%}
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div><!-- /.tab-pane -->
+                                    <div id="tab_2" class="tab-pane">
+                                        {#-formas de pagos-#}
+            
+                                        {%for fp in entity.formasPagos%} 
+                                             {%if fp.tipo == 'Tarjeta Credito'%}
+                                              <div class="box box-solid box-primary">
+                                                 <div class="box-header ">                                    
+                                                     <h3 class="box-title pull-right"><i class="fa fa-credit-card"></i> Tarjeta de Cr&eacute;dito</h3>
+                                                 </div><!-- /.box-header -->
+                                                 <div class="box-body">
+                                                     <table class="table table-responsive table-bordered table-condensed table-striped">
+                                                         <tbody>
+
+                                                             <tr>
+                                                            <th>Emisor VTC</th>
+                                                            <td>{{ fp.emisorVtc }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Aerolinea</th>
+                                                            <td>{{ fp.aerolinea }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Banco Emisor Tarjeta</th>
+                                                            <td><b class="text-red">{{ fp.bancoEmisorTarjeta }}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Tipo Tarjeta</th>
+                                                            <td>{{ fp.tipoTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>N&uacute;mero Tarjeta</th>
+                                                            <td>{{ fp.numeroTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Propietario</th>
+                                                            <td>{{ fp.propietario }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Vence</th>
+                                                            <td>{{ fp.vence|date('m/Y') }}</td>
+                                                        </tr>          
+                                                        <tr>
+                                                            <th>Tipo Pago</th>
+                                                            <td>{{ fp.tipoPago }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Plazo</th>
+                                                            <td>{{ fp.plazo }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Tipo Autorizaci&oacute;n</th>
+                                                            <td>{{ fp.tipoAutorizacion }}</td>
+                                                        </tr>
+                                                   
+                                                        <tr>
+                                                            <th>N&uacute;mero Autorizaci&oacute;n</th>
+                                                            <td>{{ fp.numeroAutorizacion }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Valor Tarjeta</th>
+                                                            <td>$ {{ fp.valorTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Inter&eacute;s Tarjeta</th>
+                                                            <td>$ {{ fp.interesTarjeta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Valor Total</th>
+                                                            <td>$ {{ fp.valorTotal }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Paga a Pasajeros</th>
+                                                            <td>{{ fp.pagoPasajeros }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                </div><!-- /.box-body -->
+                                          </div>
+                                        {%endif%}
+                                        {%endfor%}
+                                        
+                                        {#----DETB------#}
+                                       {%for fp in entity.formasPagos%} 
+                                        {%if fp.tipo == 'DETB'%}
+                                            <div class="box box-solid box-primary">
+                                            <div class="box-header ">                                    
+                                                <h3 class="box-title pull-right"><i class="fa fa-barcode"></i> {{ fp.transaccion }}</h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table class="table table-responsive table-bordered table-condensed table-striped">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Banco</th>
+                                                                <td>{{ fp.banco }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>N&uacute;mero Documento</th>
+                                                                <td>{{ fp.numeroDocumento }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Valor</th>
+                                                                <td>{{ fp.valor }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Transacci&oacute;n</th>
+                                                                <td>{{ fp.transaccion }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div><!-- /.box-body -->
+                                          </div>
+                                        {%endif%}
+                                        {%endfor%}
+                                        {#---------Pagos Directos--------------#}
+                                        {%for fp in entity.formasPagos%} 
+                                        {%if fp.tipo == 'Pago Directo'%}
+                                            <div class="box box-solid box-primary">
+                                            <div class="box-header ">                                    
+                                                <h3 class="box-title pull-right"><i class="fa fa-money"></i> Pago Directo</h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table class="table table-responsive table-bordered table-condensed table-striped">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <th>Tipo Pago</th>
+                                                            <td>{{ fp.tipoPago }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Valor</th>
+                                                            <td>{{ fp.valor }}</td>
+                                                        </tr>        
+                                                    </tbody>
+                                                </table>
+                                            </div><!-- /.box-body -->
+                                          </div>
+                                        {%endif%}
+                                   {%endfor%}
+                                    </div><!-- /.tab-pane -->
+                                    <div id="tab_3" class="tab-pane">
+                                        {%if entity.adjunto%}
+                                            <hr>
+                                            <a onclick="openAdjunto('{{entity.adjunto}}');" href="#"><i class="fa fa-download"></i> {{entity.adjunto}}</a><hr>
+                                            {#<iframe  src="{{entity.adjunto}}" style="border: 0px;width: 100%;height: 450px;"></iframe>#}
+                                        {%else%}
+                                            <h3>No existe Documento de respaldo para esta orden.</h3>
+                                        {%endif%}
+                                        
+                                    </div>
+                                </div><!-- /.tab-content -->
+                            </div>
+              
+                
+                
+               
+     </div>
+   
+ {% endblock %}
+  {% block javascripts %}
+      {{parent()}}
+     <script type="text/javascript">
+         
+      function openAdjunto(adjunto)
+        {
+           window.open(String(adjunto)); 
+        }
+     </script>
+  {% endblock %}

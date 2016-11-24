@@ -1,0 +1,57 @@
+                        {%if 'ROLE_COUNTER' in app.user.roles%}
+                            <li class="active">
+                            <a href="{{path('EmisionesBundle_queue_manger')}}">
+                                <i class="fa fa-th"></i> <span>Panel Control</span>
+                            </a>
+                            </li>
+                            <!--Agregado para no permitir modificar la orden una vez cambiado su estado inicial-->
+                            {%if entity.estado =='Pendiente'%}
+                            <li class="">
+                            <a href="                            
+                                    {%if entity.getTipo == 'Emision' %}
+                                        {{path('counter_emision_edit',{'id':entity.id})}}
+                                    {%elseif entity.getTipo == 'Revision'%}
+                                        {{path('counter_revision_edit',{'id':entity.id})}}
+                                     {%elseif entity.getTipo == 'Anulacion'%}
+                                        {{path('counter_anulacion_edit',{'id':entity.id})}}
+                                    {%endif%}
+                                {#{%endif%}#}">
+                                <i class="ion ion-document-text"></i> <span> Orden</span>
+                            </a>
+                          </li>
+                          {%else%}
+                            <li class="">
+                            <a href="                            
+                                    {%if entity.getTipo == 'Emision' %}
+                                        {{path('counter_emision_show',{'id':entity.id})}}
+                                    {%elseif entity.getTipo == 'Revision'%}
+                                        {{path('counter_revision_show',{'id':entity.id})}}
+                                     {%elseif entity.getTipo == 'Anulacion'%}
+                                        {{path('counter_anulacion_show',{'id':entity.id})}}
+                                    {%endif%}
+                                {#{%endif%}#}">
+                                <i class="ion ion-eye"></i> <span> Detalle Orden</span>
+                            </a>
+                          </li>  
+                          {%endif%}
+                          <!--Agregado para no permitir modificar la orden una vez cambiado su estado inicial-->
+                        <li class="">
+                            <a href="{{path('counter_render_reporte')}}">
+                                <i class="ion ion-stats-bars"></i> <span> Reportes</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{path('counter_render_email',{'entity':entity.id})}}">
+                                <i class="fa fa-envelope"></i> <span>Enviar Email Agente</span>
+                            </a>
+                        </li>
+                        {%elseif 'ROLE_SUPERVISOR' in app.user.roles%}
+                            <li class="active">
+                                <a href="{{path('EmisionesBundle_queue_manger')}}">
+                                    <i class="fa fa-sort-amount-asc"></i> <span>Cola</span>
+                                </a>
+                            </li>
+                        {%endif%}
+
+                        
+                       

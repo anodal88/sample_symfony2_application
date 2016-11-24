@@ -1,0 +1,98 @@
+                    <li class="">
+                            <a href="{{path('index')}}">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                       
+                        <li class="active">
+                            <a href="{{path('EmisionesBundle_supervisor_dashboard')}}">
+                                <i class="fa fa-th"></i> <span>Panel Control</span>
+                            </a>
+                        </li>
+                       
+                        <li class="treeview" >
+                            <a href="#">
+                                <i class="fa fa-cogs"></i> <span>Configuraciones</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">            
+                                <li><a href="{{path('feriado')}}"><i class="fa fa-calendar"></i>Feriados</a></li>
+                                <li><a href="{{path('supervisor_empresa_edit',{'id':app.user.empresa.id})}}"><i class="fa fa-suitcase"></i>Mi Empresa</a></li>
+                                <li><a href="{{path('supervisor_index_daemons')}}"><i class="fa fa-linux"></i> Daemons</a></li>
+                                <li><a href="{{path('supervisor_index_configuraciones')}}"><i class="fa fa-cog"></i> Par&aacute;matros Globales</a></li>
+                                <li><a href="{{path('supervisor_index_plan_piloto')}}"><i class="ion ion-plane"></i> Planes Pilotos</a></li>
+                                
+                            </ul>
+                        </li>
+                        
+                        <li class="treeview" >
+                            <a href="#">
+                                <i class="ion ion-android-contact"></i> <span>Administrar Counters</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">            
+                                <li><a href="{{path('supervisor_index_counters')}}"><i class="fa fa-list"></i>Listar</a></li>
+                                <li><a href="{{path('supervisor_new_counter')}}"><i class="fa fa-plus"></i>Registrar</a></li>
+                           
+                                
+                            </ul>
+                        </li>
+     
+                        <li class="treeview" >
+                            <a href="#">
+                                <i class="fa fa-user"></i> <span>Administrar Agentes</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">            
+                                <li><a href="{{path('supervisor_index_agentes')}}"><i class="fa fa-list"></i>Listar</a></li>
+                                <li><a href="{{path('supervisor_new_agente')}}"><i class="fa fa-plus"></i>Registrar</a></li>
+                           
+                                
+                            </ul>
+                        </li>
+                        
+                        <li class="treeview" >
+                            <a href="#">
+                                <i class="fa fa-briefcase"></i> <span>Administrar Agencias</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">            
+                                <li><a href="{{path('supervisor_index_agencias')}}"><i class="fa fa-list"></i>Listar</a></li>
+                                <li><a href="{{path('supervisor_new_agencia')}}"><i class="fa fa-plus"></i>Adicionar</a></li>
+                           
+                                
+                            </ul>
+                        </li>
+                       
+                        <li><a href="{{path('EmisionesBundle_queue_manger')}}"><i class="fa fa-sort-amount-asc"></i> Cola</a></li>
+                        
+                       
+                        <li class="treeview" >
+                            <a href="#">
+                                <i class="ion ion-stats-bars"></i> <span>Reportes</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">                               
+                                <li><a href="{{path('supervisor_report_porcentaje_vs_estados')}}"><i class="fa  fa-puzzle-piece"></i>Porcentaje Vs Estados</a></li>
+                                <li><a href="{{path('supervisor_report_estados_vs_counters')}}"><i class="fa  fa-puzzle-piece"></i>Estados Vs Counters</a></li>
+                                 <li><a href="{{path('supervisor_load_incumplimientoSla')}}"><i class="fa  fa-puzzle-piece"></i>Incumplimientos SLA</a></li>
+                                <li><a href="{{path('supervisor_report_tipos_vs_counters')}}"><i class="fa  fa-puzzle-piece"></i> Tipos Vs Counters</a></li>                               
+                            </ul>
+                        </li>
+                        <li class="treeview" >
+                            <a href="#">
+                                <i class="fa fa-film"></i> <span>Turoriales</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">            
+                                <li><a href="{{path('supervisor_index_agentes')}}"><i class="fa fa-film"></i>Administrar Agentes</a></li>
+                                <li><a href="{{path('supervisor_new_agente')}}"><i class="fa fa-film"></i>Administrar Agencias</a></li>
+                           
+                                
+                            </ul>
+                        </li>
+                        <li class="active">
+                            <a href="#">
+                                <i class="icon-file-pdf"></i> <span>Manual de Usuario</span>
+                            </a>
+                        </li>

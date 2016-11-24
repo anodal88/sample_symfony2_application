@@ -1,0 +1,30 @@
+configuracion:
+    path:     /
+    defaults: { _controller: "BaseBundle:Configuracion:index" }
+
+configuracion_show:
+    path:     /{id}/show
+    defaults: { _controller: "BaseBundle:Configuracion:show" }
+
+configuracion_new:
+    path:     /new
+    defaults: { _controller: "BaseBundle:Configuracion:new" }
+
+configuracion_create:
+    path:     /create
+    defaults: { _controller: "BaseBundle:Configuracion:create" }
+    requirements: { _method: post }
+
+configuracion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BaseBundle:Configuracion:edit" }
+
+configuracion_update:
+    path:     /{id}/update
+    defaults: { _controller: "BaseBundle:Configuracion:update" }
+    requirements: { _method: post|put }
+
+configuracion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BaseBundle:Configuracion:delete" }
+    requirements: { _method: post|delete }

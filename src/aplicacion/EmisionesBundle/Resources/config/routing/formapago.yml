@@ -1,0 +1,30 @@
+formapago:
+    path:     /{orden}/
+    defaults: { _controller: "EmisionesBundle:Formapago:index" }
+
+formapago_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Formapago:show" }
+
+formapago_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Formapago:new" }
+
+formapago_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Formapago:create" }
+    requirements: { _method: post }
+
+formapago_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Formapago:edit" }
+
+formapago_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Formapago:update" }
+    requirements: { _method: post|put }
+
+formapago_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Formapago:delete" }
+    requirements: { _method: post|delete }

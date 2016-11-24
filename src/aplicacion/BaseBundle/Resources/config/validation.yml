@@ -1,0 +1,62 @@
+aplicacion\BaseBundle\Entity\User:
+    properties:
+        nombre:
+            
+            - NotBlank: ~
+            - Length:
+                min: 3
+                max: 255
+                minMessage: "El nombre debe tener al menos {{ limit }} caracteres."
+                maxMessage: "El nombre debe tener maximo {{ limit }} caracteres."
+                
+        apellidos:
+            
+            - NotBlank: ~
+            - Length:
+                min: 3
+                max: 255
+                minMessage: "El nombre debe tener al menos {{ limit }} caracteres."
+                maxMessage: "El nombre debe tener maximo {{ limit }} caracteres."
+                
+        ci:
+            - Regex:
+                pattern: '/^((2[0-4]{1})|((0|1)[0-9]{1}))[0-5]{1}[0-9]{6}[0-9]{1}$/'                
+                message: El numero de cedula es incorrecto.
+                
+
+                
+        sexo:
+            - NotBlank: ~
+            
+        celular:           
+            - Regex:
+                pattern: '/^(09)[0-9]{8}$/'                
+                message: El numero de celular es incorrecto.
+                
+        telefono:           
+            - Regex:
+                pattern: '/^(([1-9]{3})(\s|-)0[1-9]{1}(\s|-)[0-9]{3}(\s|-)[0-9]{4}(|--([0-9]{1,6})))$/'                
+                message: El numero de telefono no coincide con un valor real.
+                
+        ext:           
+            - Regex:
+                pattern: '/^[0-9]{1,6}$/'                
+                message: La extension no coincide con un valor real.
+                
+        username:           
+            - Regex:
+                pattern: '/^[A-Za-z][_a-z0-9-]+(\.[A-Za-z][_a-z0-9-]+)$/'                
+                message: El nombre de usuario debe empezar con letras, debe tener formato nombre.apellido.
+                
+        plainPassword:           
+            - Regex:
+                pattern: '/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/'                
+                message: El password debe tener una longitud minima de 8 catateres, al menos una letra mayuscula, una minuscula, un numero y simbolos.
+                
+        email:
+            - Regex:
+                pattern: '/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/'                
+                message: El email tiene que ser un valor real.      
+                
+            
+    

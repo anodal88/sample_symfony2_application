@@ -1,0 +1,30 @@
+orden:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Orden:index" }
+
+orden_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Orden:show" }
+
+orden_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Orden:new" }
+
+orden_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Orden:create" }
+    requirements: { _method: post }
+
+orden_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Orden:edit" }
+
+orden_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Orden:update" }
+    
+
+orden_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Orden:delete" }
+    requirements: { _method: post|delete }

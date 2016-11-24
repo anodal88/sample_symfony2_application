@@ -1,0 +1,106 @@
+EmisionesBundle_agencia:
+        resource: "@EmisionesBundle/Resources/config/routing/agencia.yml"
+        prefix:   /agencia
+        
+EmisionesBundle_aerolinea:
+        resource: "@EmisionesBundle/Resources/config/routing/aerolinea.yml"
+        prefix:   /aerolinea
+
+emisiones_agente:
+    resource: "@EmisionesBundle/Resources/config/routing/agente.yml"
+    prefix:   /register/agente
+    
+Emisiones_supervisor:
+    resource: "@EmisionesBundle/Resources/config/routing/supervisor.yml"
+    prefix:   /supervisor
+    
+Emisiones_counter:
+    resource: "@EmisionesBundle/Resources/config/routing/counter.yml"
+    prefix:   /counter
+    
+EmisionesBundle_usuariointerno:
+        resource: "@EmisionesBundle/Resources/config/routing/usuariointerno.yml"
+        prefix:   /register/usuariointerno
+    
+EmisionesBundle_orden:
+        resource: "@EmisionesBundle/Resources/config/routing/orden.yml"
+        prefix:   /orden
+        
+EmisionesBundle_continente:
+        resource: "@EmisionesBundle/Resources/config/routing/continente.yml"
+        prefix:   /continente
+        
+EmisionesBundle_pais:
+        resource: "@EmisionesBundle/Resources/config/routing/pais.yml"
+        prefix:   /pais
+        
+EmisionesBundle_ciudad:
+        resource: "@EmisionesBundle/Resources/config/routing/ciudad.yml"
+        prefix:   /ciudad
+    
+EmisionesBundle_emision:
+        resource: "@EmisionesBundle/Resources/config/routing/emision.yml"
+        prefix:   /emision
+        
+EmisionesBundle_revision:
+        resource: "@EmisionesBundle/Resources/config/routing/revision.yml"
+        prefix:   /revision
+        
+EmisionesBundle_anulacion:
+        resource: "@EmisionesBundle/Resources/config/routing/anulacion.yml"
+        prefix:   /anulacion
+        
+EmisionesBundle_formapago:
+        resource: "@EmisionesBundle/Resources/config/routing/formapago.yml"
+        prefix:   /formapago
+        
+EmisionesBundle_tarjetacredito:
+        resource: "@EmisionesBundle/Resources/config/routing/tarjetacredito.yml"
+        prefix:   /tarjetacredito
+        
+EmisionesBundle_pagodirecto:
+        resource: "@EmisionesBundle/Resources/config/routing/pagodirecto.yml"
+        prefix:   /pagodirecto
+        
+EmisionesBundle_depefectivotransferenciabancaria:
+        resource: "@EmisionesBundle/Resources/config/routing/depefectivotransferenciabancaria.yml"
+        prefix:   /depefectivotransferenciabancaria       
+        
+EmisionesBundle_caja:
+        resource: "@EmisionesBundle/Resources/config/routing/caja.yml"
+        prefix:   /caja
+        
+        
+#Esta ruta es glogbal para todo el bundle para que pueda ser utilizado por todos los roles
+EmisionesBundle_queue_manger:
+    path:     /queue/manager/
+    defaults: { _controller: "EmisionesBundle:Global:Grid" }
+        
+        
+EmisionesBundle_cyborg:
+        resource: "@EmisionesBundle/Resources/config/routing/cyborg.yml"
+        prefix:   /cyborg
+#ordenes:
+#    path:     /procesar/
+#    defaults: { _controller: "EmisionesBundle:Emisiones:index"}
+#    
+#exportar_pdf:
+#    path:     /exportar/pdf/
+#    defaults: { _controller: "EmisionesBundle:Emision:makePdf"}
+#    
+#render_email:
+#    path:     /render/email/{entity}/
+#    defaults: { _controller: "EmisionesBundle:Emision:renderMail"}
+#    
+#enviar_email:
+#    path:     /enviar/
+#    defaults: { _controller: "EmisionesBundle:Emision:sendMail"}
+#    
+#render_reporte:
+#    path:     /render/reporte/
+#    defaults: { _controller: "EmisionesBundle:Emisiones:renderReporte"}
+#    
+#make_reporte:
+#    path:     /make/reporte/
+#    defaults: { _controller: "EmisionesBundle:Emisiones:makeReporte"}
+#    

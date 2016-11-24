@@ -1,0 +1,174 @@
+{% extends 'BaseBundle:Masters:index.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+        
+
+{% block sidebar %} 
+        {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Agentes</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Supervisor</li>
+     <li class="active">Agentes</li>
+ {% endblock %}
+     
+ {% block area %}
+    <div class="col-sm-12 "> 
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        <a href="{{path('supervisor_new_counter')}}" title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-blue btn-circle" data-original-title="Registrar"><i class="fa fa-plus"></i></a>
+                                        <a href="#" onclick="table.ajax.reload();" title="" data-toggle="tooltip"  class="btn btn-sm btn-bg bg-navy btn-circle" data-original-title="Actualizar"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Todos los counters</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                    <hr>
+                                    <table id="counters"   class="table table-bordered table-striped" cellspacing="0" width="100%">
+                                        <thead  class="text-blue">
+                                            <tr>
+                                                <th style="text-align: center;">Foto</th>
+                                                <th style="text-align: center;">Nombre</th>
+                                                <th style="text-align: center;">Email</th>
+                                                <th style="text-align: center;">Sexo</th>
+                                                <th style="text-align: center;">Celular</th>
+                                                <th style="text-align: center;">Convencional</th>
+                                                <th style="text-align: center;">Almuerzo</th>
+                                                <th style="text-align: center;">Jornada</th>
+                                                <th style="text-align: center;">Acciones</th>
+                                            </tr>
+                                        </thead>
+
+                                      
+                                    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+        </div>
+  {% endblock %}
+
+{% block javascripts %}
+      {{parent()}}
+       <script src="{{ asset('bundles/base/js/plugins/datatables/1.10.4/jquery.dataTables.js') }}" type="text/javascript"></script>
+       <script src="{{ asset('bundles/base/js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+           <script type="text/javascript">
+               
+         
+                
+            $(document).ready(function() {
+                  
+                     table =  $('#counters').DataTable( 
+                           {
+                            bFilter: true,
+                            bInfo: true,
+                            "oLanguage": {
+			           "sEmptyTable": "No existen datos para mostrar.",
+                                   "sSearch":'Buscar: ',
+                                    "oPaginate": {
+				             "sNext": "Siguiente",
+                                             "sPrevious": "Anterior",
+                                             "sLast": "Fin",
+                                             "sFirst": "inicio"
+				           },
+                                    "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ elementos",
+                                    "sInfoEmpty": "Mostrando 0 al 0 de 0 elementos",
+                                    "sLengthMenu": "Mostrar _MENU_ elementos",
+                                    "sLoadingRecords": "Cargando...",
+                                    "sProcessing": "Procesando...",
+                                    "sZeroRecords": "No se encontraron coincidencias",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ elementos)",
+			         },
+                            bJQueryUI: true,                        
+                            bPaginate: true,
+                            bStateSave: false,
+                            bSort: true,
+                            bProcessing: true,
+                            aoColumns: [ 
+                               
+                                {
+                                    "mData" : "null",
+                                    "bSortable": false,
+                                    "sWidth":"5%",
+                                    "mRender": function (data, type, full) 
+                                    {
+                                        //var idagente=full[0];
+                                        //alert(full.agencia)
+                                        return '<img alt="'+full.id+'" style="width:45px;height:45px;" class="img-rounded" src='+"{{asset('uploads/usuarios/')}}"+full.foto+'>'
+                                    ; 
+                                    }
+                                }, 
+                                {"mData" : "nombre","sWidth":"15%"}, 
+                                {"mData" : "email","sWidth":"15%"},                                
+                                {
+                                    "mData": null,
+                                    "bSortable": false,
+                                    "sWidth":"2%",
+                                    "mRender": function (data, type, full) 
+                                    {
+                                        //var idagente=full[0];
+                                        //alert(full.agencia)
+                                        if(full.sexo=='fa fa-male')
+                                            {
+                                               return '<i style="margin-left:10px; color:#001f3f !important;" class="'+full.sexo+'"></i>'; 
+                                            }
+                                        else
+                                            {
+                                                return '<i style="margin-left:10px; color:#85144b !important;" class="'+full.sexo+'"></i>'; 
+                                            }
+                                        
+                                    }
+                                },                               
+                                {"mData" : "celular","sWidth":"10%"},
+                                {"mData" : "convencional","sWidth":"10%"},
+                                {"mData" : "almuerzo","sWidth":"10%"},
+                                {"mData" : "jornada","sWidth":"10%"},                                                             
+                                {
+                                    "mData": null,
+                                    "bSortable": false,
+                                    "sWidth":"10%",
+                                    "mRender": function (data, type, full) 
+                                    {
+                                        //var idagente=full[0];
+                                        //alert(full.agencia)
+                                        return '<a style="margin-left:3px;" title="" data-toggle="tooltip" data-original-title="Remove" href='+'"'+full.editar+'"'+' ><i class="fa fa-edit"></i>' + '</a>'
+                                              +'<a style="margin-left:3px;"  class=""href='+'"'+full.chpass+'"'+' > <i class="fa fa-key"></i>' + '</a>'
+                                              +'<a style="margin-left:3px; " title="" data-toggle="tooltip" class="" href='+full.lockUnlock+' > <i class="'+full.bloqueado+'"></i>' + '</a>'
+                                              +'<a style="margin-left:3px; " title="" data-toggle="tooltip" class="" href='+full.unableEnable+' > <i class="'+full.habilitado+'"></i>' + '</a>'
+                                    ; 
+                                    }
+                                }
+                                
+                            ], 
+                            order: [],
+                            sAjaxSource: "{{path('load_counters_ajax')}}",
+                            sServerMethod: "POST",
+                             "fnServerParams": function ( aoData ) 
+                             {
+                                aoData.push( { "name": "empresa_id", "value": "{{app.user.empresa.id}}" } );
+                             }
+                        } );
+                        
+                         window.setInterval(function()
+                            { 
+                            table.ajax.reload();
+                            }, 120000);
+                       
+          
+                    } );
+                   
+            
+               
+         
+        </script>
+  {% endblock %}

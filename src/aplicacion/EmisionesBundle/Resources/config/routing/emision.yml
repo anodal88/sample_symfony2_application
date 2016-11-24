@@ -1,0 +1,30 @@
+emision:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Emision:index" }
+
+emision_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Emision:show" }
+
+emision_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Emision:new" }
+
+emision_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Emision:create" }
+    requirements: { _method: post }
+
+emision_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Emision:edit" }
+
+emision_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Emision:update" }
+    #requirements: { _method: post|put }
+
+emision_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Emision:delete" }
+    requirements: { _method: post|delete }

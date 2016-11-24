@@ -1,0 +1,30 @@
+usuariointerno:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:index" }
+
+usuariointerno_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:show" }
+
+usuariointerno_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:new" }
+
+usuariointerno_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:register" }
+    requirements: { _method: post }
+
+usuariointerno_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:edit" }
+
+usuariointerno_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:update" }
+    
+
+usuariointerno_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Usuariointerno:delete" }
+    requirements: { _method: post|delete }

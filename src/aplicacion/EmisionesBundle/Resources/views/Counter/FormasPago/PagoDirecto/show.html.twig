@@ -1,0 +1,68 @@
+
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+ {% block stylesheets %}
+     {{parent()}}
+            <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+           
+        {% endblock %}
+
+        
+ {% block sidebar %} 
+           {% include 'EmisionesBundle:Menu:submenucounter.html.twig' %} 
+ {% endblock %}
+ 
+ {%block titlepage %}
+     <h1>
+        Dashboard
+         <small>Orden  {{entity.numeroOrden}} </small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Formas de Pago</li>
+     <li class="">Pago Directo</li>
+     <li class="active">{{fp.id}}</li>
+ {% endblock %}
+  
+ {% block area %}
+     <div class="col-md-12">
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-right box-tools pull-left">
+                                        <a href="{{path('counter_formas_pago',{'orden':entity.id})}}" title="" data-toggle="tooltip"  class="btn btn-circle btn-sm btn-bg bg-blue" data-original-title="Formas de Pago"><i class="fa fa-list"></i></a>
+                                    </div>
+                                    <h3 class="box-title pull-right">Formas de Pago Orden: {{entity.id}}</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                     
+      <table class="table table-responsive table-bordered table-condensed table-striped">
+        <tbody>
+            
+            <tr>
+                <th>Tipo Pago</th>
+                <td>{{ fp.tipoPago }}</td>
+            </tr>
+            <tr>
+                <th>Valor</th>
+                <td>{{ fp.valor }}</td>
+            </tr>        
+        </tbody>
+    </table>
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+    </div>
+  {% endblock %}
+  
+  {% block javascripts %}
+      {{parent()}}
+      
+         {% include 'EmisionesBundle:Snippets:exportarpdf.html.twig' %}
+        
+  {% endblock %}
+
+
+
+
+

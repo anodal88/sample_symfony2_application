@@ -1,0 +1,57 @@
+{% extends 'EmisionesBundle:Ordenes:supervisoremisiones.html.twig' %}
+{% block sidebar %} 
+           {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+
+{%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Configuraci&oacute;n</small>
+    </h1>
+ {%endblock%}
+ 
+  {% block breadcrumb %}
+     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Configuraci&oacute;n</li>
+     <li class="">Feriados</li>
+      <li class="active">Ver - Editar</li>
+ {% endblock %}
+
+{% block area%}
+    <h1>Feriado</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha-Inicio</th>
+                <td>{{ entity.inicio|date('Y-m-d') }}</td>
+            </tr>
+            <tr>
+                <th>Fecha-Fin</th>
+                <td>{{ entity.fin|date('Y-m-d') }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('feriado') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('feriado_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

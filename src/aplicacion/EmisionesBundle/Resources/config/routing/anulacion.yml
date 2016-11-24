@@ -1,0 +1,30 @@
+anulacion:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Anulacion:index" }
+
+anulacion_show:
+    path:     /{id}/show
+    defaults: { _controller: "EmisionesBundle:Anulacion:show" }
+
+anulacion_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Anulacion:new" }
+
+anulacion_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Anulacion:create" }
+    requirements: { _method: post }
+
+anulacion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Anulacion:edit" }
+
+anulacion_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Anulacion:update" }
+    requirements: { _method: post|put }
+
+anulacion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Anulacion:delete" }
+    requirements: { _method: post|delete }

@@ -1,0 +1,30 @@
+tarjetacredito:
+    path:     /
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:index" }
+
+tarjetacredito_show:
+    path:     /{id}/show/{orden}/
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:show" }
+
+tarjetacredito_new:
+    path:     /new
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:new" }
+
+tarjetacredito_create:
+    path:     /create
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:create" }
+    requirements: { _method: post }
+
+tarjetacredito_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:edit" }
+
+tarjetacredito_update:
+    path:     /{id}/update
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:update" }
+    requirements: { _method: post|put }
+
+tarjetacredito_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EmisionesBundle:Tarjetacredito:delete" }
+    requirements: { _method: post|delete }

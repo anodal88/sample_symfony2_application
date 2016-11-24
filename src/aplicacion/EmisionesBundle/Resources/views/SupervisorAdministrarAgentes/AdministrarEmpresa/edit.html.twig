@@ -1,0 +1,117 @@
+{% extends 'BaseBundle:Masters:master.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+     {{parent()}}
+           {# <link href="{{ asset('bundles/base/css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />#}
+           
+{% endblock %}
+
+    
+{% block sidebar %} 
+          {% include 'EmisionesBundle:Menu:supervisor.html.twig' %}
+ {% endblock %}
+                        
+{%block titlepage %}
+     <h1>
+        Dashboard
+        <small>Configuraci&oacute;n</small>
+    </h1>
+ {%endblock%}
+ 
+{% block breadcrumb %}
+     <li><a href="{{path('index')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+     <li class="">Configuraci&oacute;n</li>
+     <li class="active">Mi Empresa</li>
+ {% endblock %}
+     
+{% block area %}
+    <div class="col-sm-12 ">
+     <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="pull-left box-tools">
+                                        
+                                        
+                                    </div>
+                                    <h3 class="box-title pull-right">Editar Datos</h3>
+                                   
+                                </div><!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                    <form action="{{path('supervisor_empresa_update',{'id':entity.id})}}" {{form_enctype(edit_form) }} method="post" >
+                                            
+                                            <div style="margin-left: 40%;" class="form-group">
+                                                <img style="width: 20%;" alt="Logotipo" id="empresalogo" class="img-responsive img-rounded img-thumbnail" src="
+                                                     {%if entity.logo%}
+                                                        {{asset('uploads/empresas/')~entity.logo}}
+                                                     {%else%}
+                                                        {{asset('uploads/empresas/No-Logo.gif')}}
+                                                     {%endif%}
+                                                    ">
+                                                {{ form_widget(edit_form.logo) }}
+                                                <button class="btn btn-xs btn-primary" type=button onclick="this.form.aplicacion_basebundle_empresa_logo.click(); "><i class="fa fa-picture-o"></i> <span id="info" >Subir Logo</span></button>
+                                                <p class="help-block">{{form_errors(edit_form.logo)}}</p>
+                                            </div>
+                                      <div class="row">  
+                                          <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label >Raz&oacute;n Social:</label>
+                                                {{ form_widget(edit_form.razonsocial) }}
+                                                <p class="help-block">{{form_errors(edit_form.razonsocial)}}</p>
+                                            </div>
+                                            {#<div class="form-group">
+                                                <label >Matriz:</label>
+                                                {{ form_widget(edit_form.matriz) }}
+                                                <p class="help-block">{{form_errors(edit_form.matriz)}}</p>
+                                            </div>#}
+                                            <div class="form-group">
+                                                <label >Ciudad:</label>
+                                                {{ form_widget(edit_form.ciudad) }}
+                                                <p class="help-block">{{form_errors(edit_form.ciudad)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                 <label >Representante:</label>
+                                                {{ form_widget(edit_form.representante) }}
+                                                <p class="help-block">{{form_errors(edit_form.representante)}}</p>
+                                            </div>
+                                           
+                                         </div>
+                                         <div class="col-sm-6">
+                                              <div class="form-group">
+                                                 <label >Ruc:</label>
+                                                {{ form_widget(edit_form.ruc) }}
+                                                <p class="help-block">{{form_errors(edit_form.ruc)}}</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label >Tel&eacute;fono:</label>
+                                                {{ form_widget(edit_form.telefono) }}
+                                                <p class="help-block">{{form_errors(edit_form.telefono)}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label >Email:</label>
+                                                {{ form_widget(edit_form.email) }}
+                                                <p class="help-block">{{form_errors(edit_form.email)}}</p>
+                                            </div>
+                                         </div>
+                                      </div>
+                                        <div class="form-group">
+                                            <label >Direcci&oacute;n:</label>
+                                                {{ form_widget(edit_form.direccion) }}
+                                                <p class="help-block">{{form_errors(edit_form.direccion)}}</p>
+                                            </div>
+                                             
+                                       {{form_rest(edit_form)}}
+                                            <div class="box-footer">                                                               
+                                                <button type="submit"   class="btn btn-sm bg-blue-gradient "><i class="fa fa-refresh"></i> Actualizar Datos</button>  
+
+                                            
+                                            </div>
+                                    </form>
+                                
+                                    
+                                </div><!-- /.box-body -->
+     </div><!-- /.box -->
+        </div>
+  {% endblock %}
+
